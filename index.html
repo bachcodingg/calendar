@@ -1,0 +1,1673 @@
+<title>Semester Control Deck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  color-scheme: light;
+  --plane:#e8ecea; --surface:#fafbfa; --surface-2:#f0f3f1; --surface-3:#e4e9e6;
+  --ink:#11181a; --ink-2:#4d5a5c; --ink-3:#7b8a8b;
+  --line:#d3dad7; --line-2:#bcc5c1;
+  --accent:#0f6e63; --accent-2:#0a4c44; --accent-soft:#dcebe7; --accent-line:#9fcac1;
+  --good:#0ca30c; --warn:#fab219; --serious:#ec835a; --crit:#d03b3b;
+  --good-ink:#056b05; --warn-ink:#8a5a00; --serious-ink:#a04a22; --crit-ink:#a32b2b;
+  --good-bg:#e2f3e2; --warn-bg:#fbf0d6; --serious-bg:#fbe8de; --crit-bg:#f9e2e1;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a;
+  --grid:#e1e0d9; --axis:#c3c2b7; --muted-ink:#898781;
+  --shadow:0 1px 2px rgba(17,24,26,.05), 0 8px 24px -12px rgba(17,24,26,.18);
+  --r:6px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --plane:#0b0f0e; --surface:#141918; --surface-2:#1a201f; --surface-3:#222927;
+    --ink:#eef2f0; --ink-2:#a3b0ae; --ink-3:#7d8a8b;
+    --line:#283030; --line-2:#3a4442;
+    --accent:#34b3a1; --accent-2:#6fd2c3; --accent-soft:#10302c; --accent-line:#1d5750;
+    --good-ink:#4fc74f; --warn-ink:#f0bc4a; --serious-ink:#f0a17f; --crit-ink:#ee7070;
+    --good-bg:#0f2a12; --warn-bg:#332612; --serious-bg:#341f14; --crit-bg:#331616;
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70;
+    --grid:#2c2c2a; --axis:#383835;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -14px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --plane:#0b0f0e; --surface:#141918; --surface-2:#1a201f; --surface-3:#222927;
+  --ink:#eef2f0; --ink-2:#a3b0ae; --ink-3:#7d8a8b;
+  --line:#283030; --line-2:#3a4442;
+  --accent:#34b3a1; --accent-2:#6fd2c3; --accent-soft:#10302c; --accent-line:#1d5750;
+  --good-ink:#4fc74f; --warn-ink:#f0bc4a; --serious-ink:#f0a17f; --crit-ink:#ee7070;
+  --good-bg:#0f2a12; --warn-bg:#332612; --serious-bg:#341f14; --crit-bg:#331616;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70;
+  --grid:#2c2c2a; --axis:#383835;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -14px rgba(0,0,0,.7);
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--plane); color:var(--ink);
+  font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:14px; line-height:1.5; -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:Archivo,"IBM Plex Sans",system-ui,sans-serif; margin:0; text-wrap:balance; font-variation-settings:"wdth" 112;}
+h1{font-size:19px; font-weight:700; letter-spacing:-.01em}
+h2{font-size:16px; font-weight:700; letter-spacing:-.005em}
+h3{font-size:13.5px; font-weight:650}
+.mono,.num{font-family:"IBM Plex Mono",ui-monospace,monospace; font-variant-numeric:tabular-nums}
+.eyebrow{font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3); font-weight:500}
+button{font:inherit; color:inherit; cursor:pointer}
+input,select,textarea{font:inherit; color:var(--ink)}
+:focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:3px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important}}
+
+/* ============ shell ============ */
+.topbar{
+  position:sticky; top:0; z-index:40; background:var(--surface);
+  border-bottom:1px solid var(--line);
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap; padding:10px 18px;
+}
+.brand{display:flex; align-items:center; gap:9px; margin-right:auto}
+.brand .dot{width:9px; height:9px; border-radius:50%; background:var(--accent); flex:none; box-shadow:0 0 0 3px var(--accent-soft)}
+.brand small{display:block; font-family:"IBM Plex Mono",monospace; font-size:10px; color:var(--ink-3); letter-spacing:.1em; text-transform:uppercase; font-weight:500}
+.clock{display:flex; gap:18px; align-items:center}
+.clock .cell{display:flex; flex-direction:column; line-height:1.2}
+.clock .cell b{font-family:"IBM Plex Mono",monospace; font-size:13.5px; font-weight:600; font-variant-numeric:tabular-nums}
+.clock .cell span{font-family:"IBM Plex Mono",monospace; font-size:9px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-3)}
+.tbtn{background:var(--surface-2); border:1px solid var(--line); border-radius:var(--r); padding:6px 11px; font-size:12.5px; font-weight:500; display:inline-flex; align-items:center; gap:6px}
+.tbtn:hover{border-color:var(--line-2); background:var(--surface-3)}
+.shell{display:grid; grid-template-columns:212px minmax(0,1fr); align-items:start}
+.rail{position:sticky; top:53px; padding:14px 10px 40px; border-right:1px solid var(--line); background:var(--surface); min-height:calc(100vh - 53px); display:flex; flex-direction:column; gap:2px}
+.rail .eyebrow{padding:12px 10px 6px}
+.navb{display:flex; align-items:center; gap:9px; width:100%; text-align:left; background:none; border:0; padding:8px 10px; border-radius:var(--r); color:var(--ink-2); font-size:13.5px; font-weight:500}
+.navb:hover{background:var(--surface-2); color:var(--ink)}
+.navb[aria-current="true"]{background:var(--accent-soft); color:var(--accent-2); font-weight:600}
+.navb .ic{width:15px; height:15px; flex:none; opacity:.8}
+.navb .tally{margin-left:auto; font-family:"IBM Plex Mono",monospace; font-size:10.5px; color:var(--ink-3); font-variant-numeric:tabular-nums}
+main{padding:22px 24px 80px; min-width:0; max-width:1240px}
+.view{display:flex; flex-direction:column; gap:20px}
+.view[hidden]{display:none}
+@media (max-width:900px){
+  .shell{grid-template-columns:minmax(0,1fr)}
+  .rail{position:sticky; top:0; min-height:0; flex-direction:row; overflow-x:auto; border-right:0; border-bottom:1px solid var(--line); padding:8px 12px; gap:4px; z-index:30}
+  .rail .eyebrow{display:none}
+  .navb{width:auto; white-space:nowrap}
+  .navb .tally{margin-left:6px}
+  main{padding:18px 16px 70px}
+}
+
+/* ============ modules ============ */
+.module{background:var(--surface); border:1px solid var(--line); border-radius:9px; overflow:hidden}
+.module>header{display:flex; align-items:center; gap:12px; padding:12px 16px; border-bottom:1px solid var(--line); flex-wrap:wrap}
+.module>header .sub{color:var(--ink-3); font-size:12.5px; margin-left:auto; text-align:right}
+.module .body{padding:16px}
+.module .body.flush{padding:0}
+.cols{display:grid; gap:20px; grid-template-columns:minmax(0,1.5fr) minmax(0,1fr); align-items:start}
+@media (max-width:1060px){.cols{grid-template-columns:minmax(0,1fr)}}
+
+/* ============ kpi ============ */
+.kpis{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); background:var(--line); gap:1px; border:1px solid var(--line); border-radius:9px; overflow:hidden}
+.kpi{background:var(--surface); padding:13px 15px; display:flex; flex-direction:column; gap:2px}
+.kpi b{font-family:"IBM Plex Mono",monospace; font-size:24px; font-weight:600; line-height:1.1; letter-spacing:-.02em}
+.kpi .lab{font-family:"IBM Plex Mono",monospace; font-size:9px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-3)}
+.kpi .note{font-size:11.5px; color:var(--ink-2)}
+
+/* ============ chips ============ */
+.chip{display:inline-flex; align-items:center; gap:5px; padding:2px 8px; border-radius:999px; font-size:10.5px; font-weight:600; font-family:"IBM Plex Mono",monospace; letter-spacing:.04em; text-transform:uppercase; border:1px solid transparent; white-space:nowrap}
+.chip .g{width:6px; height:6px; border-radius:50%; flex:none}
+.chip.low{background:var(--good-bg); color:var(--good-ink); border-color:color-mix(in srgb,var(--good) 32%,transparent)}
+.chip.low .g{background:var(--good)}
+.chip.mod{background:var(--warn-bg); color:var(--warn-ink); border-color:color-mix(in srgb,var(--warn) 45%,transparent)}
+.chip.mod .g{background:var(--warn)}
+.chip.high{background:var(--serious-bg); color:var(--serious-ink); border-color:color-mix(in srgb,var(--serious) 45%,transparent)}
+.chip.high .g{background:var(--serious)}
+.chip.crit{background:var(--crit-bg); color:var(--crit-ink); border-color:color-mix(in srgb,var(--crit) 40%,transparent)}
+.chip.crit .g{background:var(--crit)}
+.chip.tbd{background:var(--surface-3); color:var(--ink-2); border-color:var(--line-2)}
+.chip.tbd .g{background:var(--ink-3)}
+.chip.none{background:transparent; color:var(--ink-3); border-color:var(--line-2)}
+.chip.none .g{display:none}
+.chip.plain{background:var(--surface-2); color:var(--ink-2); border-color:var(--line)}
+.chip.accent{background:var(--accent-soft); color:var(--accent-2); border-color:var(--accent-line)}
+.chip.accent .g{background:var(--accent)}
+
+/* ============ buttons ============ */
+.btn{border:1px solid var(--line-2); background:var(--surface-2); border-radius:var(--r); padding:7px 12px; font-size:13px; font-weight:550; display:inline-flex; align-items:center; gap:7px}
+.btn:hover{background:var(--surface-3)}
+.btn.pri{background:var(--accent); border-color:var(--accent); color:#fff}
+.btn.pri:hover{background:var(--accent-2); border-color:var(--accent-2)}
+:root[data-theme="dark"] .btn.pri, :root:not([data-theme="light"]) .btn.pri{color:#06201c}
+.btn.sm{padding:4px 9px; font-size:12px}
+.btn.ghost{background:transparent; border-color:transparent; color:var(--ink-3)}
+.btn.ghost:hover{background:var(--surface-2); color:var(--ink)}
+.btn.danger{color:var(--crit-ink); border-color:color-mix(in srgb,var(--crit) 35%,transparent)}
+.btn.danger:hover{background:var(--crit-bg)}
+.btn[disabled]{opacity:.45; cursor:not-allowed}
+
+/* ============ forms ============ */
+.field{display:flex; flex-direction:column; gap:5px; min-width:0}
+.field>label{font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.11em; text-transform:uppercase; color:var(--ink-3); font-weight:500}
+input[type=text],input[type=number],input[type=date],select,textarea{
+  background:var(--surface-2); border:1px solid var(--line-2); border-radius:var(--r);
+  padding:7px 9px; font-size:13.5px; width:100%; min-width:0;
+}
+input[type=number],input[type=date]{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums}
+input:hover,select:hover{border-color:var(--ink-3)}
+input[type=checkbox]{accent-color:var(--accent); width:15px; height:15px; cursor:pointer}
+.grid2{display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+
+/* ============ exam readouts ============ */
+.readouts{display:grid; gap:1px; background:var(--line)}
+.readout{background:var(--surface); padding:14px 16px; display:grid; grid-template-columns:78px minmax(0,1fr) auto; gap:16px; align-items:center}
+.readout .cd{display:flex; flex-direction:column; align-items:flex-start; line-height:1}
+.readout .cd b{font-family:"IBM Plex Mono",monospace; font-size:30px; font-weight:600; letter-spacing:-.03em; font-variant-numeric:tabular-nums}
+.readout .cd span{font-family:"IBM Plex Mono",monospace; font-size:9px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3); margin-top:3px}
+.readout .meta{display:flex; flex-direction:column; gap:5px; min-width:0}
+.readout .ttl{display:flex; align-items:center; gap:8px; flex-wrap:wrap}
+.readout .ttl b{font-family:Archivo,sans-serif; font-size:14.5px; font-weight:650; font-variation-settings:"wdth" 112}
+.readout .facts{font-family:"IBM Plex Mono",monospace; font-size:11.5px; color:var(--ink-2); display:flex; gap:12px; flex-wrap:wrap}
+.readout .right{display:flex; flex-direction:column; align-items:flex-end; gap:7px}
+.readout.sev{border-left:3px solid transparent; padding-left:13px}
+.readout.sev-high{border-left-color:var(--serious)}
+.readout.sev-crit{border-left-color:var(--crit)}
+.readout.sev-mod{border-left-color:var(--warn)}
+@media (max-width:640px){
+  .readout{grid-template-columns:62px minmax(0,1fr); gap:12px}
+  .readout .right{grid-column:1/-1; flex-direction:row; align-items:center; justify-content:flex-start; flex-wrap:wrap}
+  .readout .cd b{font-size:24px}
+}
+
+/* progress meter */
+.meter{height:5px; background:var(--surface-3); border-radius:99px; overflow:hidden; display:flex; min-width:110px}
+.meter i{display:block; background:var(--accent); height:100%}
+.meter i.gap{background:repeating-linear-gradient(135deg,var(--line-2) 0 3px,transparent 3px 6px)}
+
+/* ============ tbd cards ============ */
+.tbdgrid{display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(268px,1fr))}
+.tbdcard{border:1px dashed var(--line-2); border-radius:8px; padding:13px 14px; display:flex; flex-direction:column; gap:10px; background:var(--surface-2)}
+.tbdcard .hd{display:flex; align-items:flex-start; gap:8px; justify-content:space-between}
+.tbdcard .hd b{font-family:Archivo,sans-serif; font-size:14px; font-weight:650; font-variation-settings:"wdth" 112}
+.tbdcard .state{font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--ink-2)}
+.setrow{display:flex; gap:7px; align-items:center; flex-wrap:wrap}
+.setrow input[type=date]{flex:1 1 140px}
+
+/* ============ tables ============ */
+.tblwrap{overflow-x:auto}
+table{border-collapse:collapse; width:100%; font-size:13px}
+th{font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.11em; text-transform:uppercase; color:var(--ink-3); font-weight:500; text-align:left; padding:9px 12px; border-bottom:1px solid var(--line); white-space:nowrap; background:var(--surface-2)}
+td{padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:middle}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover{background:var(--surface-2)}
+td.n{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; white-space:nowrap}
+td .cname{font-weight:600}
+
+/* ============ alerts ============ */
+.alert{display:flex; gap:12px; padding:13px 15px; border-radius:8px; border:1px solid; align-items:flex-start}
+.alert .ico{flex:none; width:18px; height:18px; margin-top:1px}
+.alert .txt{min-width:0; display:flex; flex-direction:column; gap:4px}
+.alert b{font-family:Archivo,sans-serif; font-size:13px; font-weight:700; letter-spacing:.02em; text-transform:uppercase; font-variation-settings:"wdth" 108}
+.alert p{margin:0; font-size:13px; color:var(--ink-2)}
+.alert.crit{background:var(--crit-bg); border-color:color-mix(in srgb,var(--crit) 35%,transparent); color:var(--crit-ink)}
+.alert.high{background:var(--serious-bg); border-color:color-mix(in srgb,var(--serious) 40%,transparent); color:var(--serious-ink)}
+.alert.mod{background:var(--warn-bg); border-color:color-mix(in srgb,var(--warn) 45%,transparent); color:var(--warn-ink)}
+.alert.info{background:var(--accent-soft); border-color:var(--accent-line); color:var(--accent-2)}
+.alert.low{background:var(--good-bg); border-color:color-mix(in srgb,var(--good) 32%,transparent); color:var(--good-ink)}
+
+/* ============ density strip ============ */
+.strip{position:relative; padding:26px 0 30px}
+.strip .axis{position:absolute; left:0; right:0; top:52px; height:1px; background:var(--axis)}
+.strip .band{position:absolute; top:16px; height:34px; border-radius:5px; background:color-mix(in srgb,var(--serious) 16%,transparent); border:1px solid color-mix(in srgb,var(--serious) 45%,transparent)}
+.strip .band.crit{background:color-mix(in srgb,var(--crit) 16%,transparent); border-color:color-mix(in srgb,var(--crit) 45%,transparent)}
+.strip .pin{position:absolute; top:38px; width:2px; height:15px; background:var(--ink); border-radius:1px}
+.strip .pin.prov{background:var(--ink-3); width:0; border-left:2px dashed var(--ink-3); height:15px}
+.strip .lbl{position:absolute; top:56px; font-family:"IBM Plex Mono",monospace; font-size:10px; color:var(--ink-2); white-space:nowrap; transform:translateX(-50%)}
+.strip .mth{position:absolute; top:0; font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3)}
+.strip .mtick{position:absolute; top:14px; width:1px; background:var(--grid); height:38px}
+.strip .now{position:absolute; top:14px; bottom:14px; width:2px; background:var(--accent)}
+
+/* ============ calendar ============ */
+.calhead{display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); border-bottom:1px solid var(--line); background:var(--surface-2)}
+.calhead div{padding:7px 8px; font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3); text-align:center}
+.cal{display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); background:var(--line); gap:1px}
+.cell{background:var(--surface); min-height:98px; padding:6px 7px; display:flex; flex-direction:column; gap:4px}
+.cell.out{background:var(--surface-2)}
+.cell.out .dn{color:var(--ink-3); opacity:.55}
+.cell.today{background:var(--accent-soft)}
+.cell .dn{font-family:"IBM Plex Mono",monospace; font-size:11.5px; color:var(--ink-2); font-variant-numeric:tabular-nums; display:flex; align-items:center; gap:5px}
+.cell.today .dn{color:var(--accent-2); font-weight:700}
+.cell .hrs{margin-left:auto; font-size:9.5px; color:var(--ink-3)}
+.ev{font-size:10.5px; line-height:1.3; padding:2px 5px; border-radius:3px; border-left:2px solid; display:block; text-align:left; width:100%; border-top:0; border-right:0; border-bottom:0; background:var(--surface-2); overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.ev.exam{background:var(--crit-bg); border-left-color:var(--crit); color:var(--crit-ink); font-weight:650}
+.ev.prov{background:var(--surface-3); border-left:2px dashed var(--ink-3); color:var(--ink-2); font-weight:600}
+.ev.due{background:var(--warn-bg); border-left-color:var(--warn); color:var(--warn-ink); font-weight:600}
+.ev.mile{background:var(--accent-soft); border-left-color:var(--accent); color:var(--accent-2)}
+.ev.rem{background:var(--surface-2); border-left-color:var(--line-2); color:var(--ink-3)}
+@media (max-width:720px){
+  .cell{min-height:72px; padding:4px 4px}
+  .ev{font-size:9px; padding:1px 3px}
+}
+
+/* ============ course rows ============ */
+.crow{display:grid; grid-template-columns:minmax(0,1fr) auto; gap:12px; padding:13px 16px; border-bottom:1px solid var(--line); align-items:center}
+.crow:last-child{border-bottom:0}
+.crow .l{display:flex; flex-direction:column; gap:6px; min-width:0}
+.crow .t{display:flex; align-items:center; gap:8px; flex-wrap:wrap}
+.crow .t b{font-family:Archivo,sans-serif; font-size:14.5px; font-weight:650; font-variation-settings:"wdth" 112}
+.crow .d{font-family:"IBM Plex Mono",monospace; font-size:11.5px; color:var(--ink-2); display:flex; gap:12px; flex-wrap:wrap}
+.crow .r{display:flex; align-items:center; gap:8px; flex-wrap:wrap; justify-content:flex-end}
+
+/* ============ sheet / modal ============ */
+.scrim{position:fixed; inset:0; background:rgba(10,16,15,.5); z-index:100; display:flex; align-items:flex-start; justify-content:center; padding:24px 16px; overflow-y:auto}
+.scrim[hidden]{display:none}
+.sheet{background:var(--surface); border:1px solid var(--line-2); border-radius:11px; width:min(720px,100%); box-shadow:var(--shadow); margin:auto}
+.sheet>header{display:flex; align-items:center; gap:10px; padding:14px 18px; border-bottom:1px solid var(--line)}
+.sheet>header h2{margin-right:auto}
+.sheet .sbody{padding:18px; display:flex; flex-direction:column; gap:18px}
+.sheet>footer{display:flex; gap:9px; padding:13px 18px; border-top:1px solid var(--line); background:var(--surface-2); border-radius:0 0 11px 11px; flex-wrap:wrap}
+.sheet>footer .sp{margin-left:auto}
+fieldset{border:1px solid var(--line); border-radius:8px; padding:14px; margin:0; display:flex; flex-direction:column; gap:12px}
+legend{font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.11em; text-transform:uppercase; color:var(--ink-3); padding:0 6px; font-weight:500}
+.seg{display:inline-flex; border:1px solid var(--line-2); border-radius:var(--r); overflow:hidden; background:var(--surface-2)}
+.seg button{border:0; background:none; padding:7px 12px; font-size:12.5px; font-weight:550; color:var(--ink-2); border-right:1px solid var(--line-2)}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--accent); color:#fff}
+:root[data-theme="dark"] .seg button[aria-pressed="true"], :root:not([data-theme="light"]) .seg button[aria-pressed="true"]{color:#06201c}
+.topiclist{display:flex; flex-direction:column; gap:1px; background:var(--line); border:1px solid var(--line); border-radius:var(--r); overflow:hidden}
+.topic{display:flex; align-items:center; gap:9px; padding:7px 10px; background:var(--surface)}
+.topic input[type=text]{border:0; background:transparent; padding:2px 0; font-size:13px}
+.topic .tdate{font-family:"IBM Plex Mono",monospace; font-size:10.5px; color:var(--ink-3); white-space:nowrap}
+.topic.done input[type=text]{text-decoration:line-through; color:var(--ink-3)}
+.dlist{display:flex; flex-direction:column; gap:8px}
+.drow{display:grid; grid-template-columns:22px minmax(120px,1.6fr) minmax(120px,1fr) 78px 30px; gap:8px; align-items:center}
+@media (max-width:620px){.drow{grid-template-columns:22px minmax(0,1fr) 30px}}
+
+/* ============ chart ============ */
+.chartwrap{overflow-x:auto}
+.chart-tip{position:absolute; pointer-events:none; background:var(--surface); border:1px solid var(--line-2); border-radius:6px; padding:7px 9px; font-size:11.5px; box-shadow:var(--shadow); z-index:20; min-width:132px}
+.chart-tip b{display:block; font-family:"IBM Plex Mono",monospace; font-size:11px; margin-bottom:3px}
+.chart-tip .tr{display:flex; justify-content:space-between; gap:12px; font-family:"IBM Plex Mono",monospace; color:var(--ink-2)}
+.legend{display:flex; gap:14px; flex-wrap:wrap; font-size:11.5px; color:var(--ink-2); padding:0 16px 14px}
+.legend span{display:inline-flex; align-items:center; gap:6px}
+.legend i{width:10px; height:10px; border-radius:2px; display:block}
+
+/* ============ planner ============ */
+.wk{display:grid; grid-template-columns:96px minmax(0,1fr); gap:14px; padding:12px 16px; border-bottom:1px solid var(--line); align-items:start}
+.wk:last-child{border-bottom:0}
+.wk .wl{display:flex; flex-direction:column; gap:2px}
+.wk .wl b{font-family:"IBM Plex Mono",monospace; font-size:12px; font-weight:600}
+.wk .wl span{font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-3)}
+.bars{display:flex; flex-direction:column; gap:5px; min-width:0}
+.bar{display:grid; grid-template-columns:minmax(0,1fr) auto; gap:10px; align-items:center; font-size:12.5px}
+.bar .track{height:16px; background:var(--surface-2); border-radius:3px; overflow:hidden; display:flex; position:relative}
+.bar .track i{height:100%; display:block; border-right:2px solid var(--surface)}
+.bar .track i:last-child{border-right:0}
+.bar .lab{font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--ink-2); white-space:nowrap}
+
+/* ============ group cards ============ */
+.groups{display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(258px,1fr))}
+.gcard{border:1px solid var(--line); border-radius:9px; overflow:hidden; background:var(--surface)}
+.gcard>header{padding:11px 14px; border-bottom:1px solid var(--line); display:flex; align-items:center; gap:9px; background:var(--surface-2)}
+.gcard>header h3{font-family:Archivo,sans-serif; letter-spacing:.06em; text-transform:uppercase; font-size:12px; font-weight:750; font-variation-settings:"wdth" 108}
+.gstats{display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line)}
+.gstat{background:var(--surface); padding:10px 14px; display:flex; flex-direction:column; gap:1px}
+.gstat b{font-family:"IBM Plex Mono",monospace; font-size:17px; font-weight:600; font-variant-numeric:tabular-nums}
+.gstat span{font-family:"IBM Plex Mono",monospace; font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3)}
+.gmembers{padding:10px 14px 13px; display:flex; flex-direction:column; gap:6px; border-top:1px solid var(--line)}
+.gm{display:flex; align-items:center; gap:8px; font-size:12.5px; justify-content:space-between}
+.gm .nm{overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+
+.hint{font-size:12px; color:var(--ink-3); line-height:1.5}
+.empty{padding:26px 16px; text-align:center; color:var(--ink-3); font-size:13px}
+.toast{position:fixed; left:50%; bottom:22px; transform:translateX(-50%); background:var(--ink); color:var(--plane); padding:9px 15px; border-radius:7px; font-size:13px; z-index:200; box-shadow:var(--shadow); max-width:calc(100% - 32px)}
+.toast[hidden]{display:none}
+.srow{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+.caps{display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:8px}
+@media (max-width:620px){.caps{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.cap{display:flex; flex-direction:column; gap:4px; align-items:center}
+.cap span{font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-3)}
+.cap input{text-align:center; padding:6px 2px}
+.statusbar{display:flex; align-items:center; gap:8px; font-family:"IBM Plex Mono",monospace; font-size:10.5px; color:var(--ink-3)}
+.statusbar .led{width:6px; height:6px; border-radius:50%; background:var(--good)}
+.statusbar .led.local{background:var(--warn)}
+</style>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="dot" aria-hidden="true"></span>
+    <span>
+      <h1>Semester Control Deck</h1>
+      <small id="semLabel">Winter semester 2026/27</small>
+    </span>
+  </div>
+  <div class="clock" id="clock"></div>
+  <button class="tbtn" id="themeBtn" type="button" aria-label="Switch colour theme">
+    <svg class="ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></svg>
+    Theme
+  </button>
+</div>
+
+<div class="shell">
+  <nav class="rail" id="rail" aria-label="Sections"></nav>
+  <main>
+    <section class="view" id="v-dash" data-view="dash"></section>
+    <section class="view" id="v-courses" data-view="courses" hidden></section>
+    <section class="view" id="v-calendar" data-view="calendar" hidden></section>
+    <section class="view" id="v-planner" data-view="planner" hidden></section>
+    <section class="view" id="v-groups" data-view="groups" hidden></section>
+    <section class="view" id="v-settings" data-view="settings" hidden></section>
+  </main>
+</div>
+
+<div class="scrim" id="scrim" hidden></div>
+<div class="toast" id="toast" hidden role="status"></div>
+
+<script>
+"use strict";
+/* ==========================================================================
+   Semester Control Deck
+   A three-state exam calendar: confirmed / TBD / no exam, with a study
+   planner that allocates real hours against real capacity.
+   ========================================================================== */
+
+const DAY = 86400000;
+const WD = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+const MON = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+/* ---------- date helpers (all local-midnight) ---------- */
+const today = () => { const n = new Date(); return new Date(n.getFullYear(), n.getMonth(), n.getDate()); };
+const parseD = s => { if (!s) return null; const p = String(s).split("-").map(Number); if (p.length !== 3 || !p[0]) return null; return new Date(p[0], p[1] - 1, p[2]); };
+const iso = d => d ? `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}` : "";
+const addDays = (d, n) => new Date(d.getFullYear(), d.getMonth(), d.getDate() + n);
+const dayDiff = (a, b) => Math.round((b - a) / DAY);
+const dowMon = d => (d.getDay() + 6) % 7;           // Monday = 0
+const weekStart = d => addDays(d, -dowMon(d));
+const fmtLong = s => { const d = parseD(s); return d ? `${d.getDate()} ${MON[d.getMonth()]} ${d.getFullYear()}` : "—"; };
+const fmtShort = s => { const d = parseD(s); return d ? `${d.getDate()} ${MON[d.getMonth()].slice(0, 3)}` : "—"; };
+const hrs = n => (Math.round(n * 10) / 10).toFixed(Math.abs(n % 1) < 0.05 ? 0 : 1) + " h";
+const pct = n => Math.round(n * 100) + "%";
+const uid = p => p + Math.random().toString(36).slice(2, 8);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+/* ---------- risk bands ---------- */
+const BANDS = [
+  { key: "low",  label: "On track", cls: "low",  max: 20 },
+  { key: "mod",  label: "Moderate", cls: "mod",  max: 40 },
+  { key: "high", label: "High risk",cls: "high", max: 65 },
+  { key: "crit", label: "Critical", cls: "crit", max: Infinity }
+];
+const band = score => BANDS.find(b => score < b.max);
+const RANK = { low: 0, mod: 1, high: 2, crit: 3 };
+
+/* ==========================================================================
+   Seed data — the semester as given. Used for the first run and for
+   "Restore semester defaults"; every value is editable in the app.
+   ========================================================================== */
+function seedCourses() {
+  const T = (names) => names.map(n => ({ id: uid("t"), name: n, done: false }));
+  const raw = [
+    ["Integral Calculus", 3, "Exam", "confirmed", "2026-10-07", "Mathematics", 24, 6,
+      ["Antiderivatives", "Definite integrals", "Integration by parts", "Partial fractions", "Improper integrals", "Area & volume applications"]],
+    ["Functional Programming", 3, "Exam", "confirmed", "2026-10-08", "Computer Science", 20, 5,
+      ["Higher-order functions", "Recursion & induction", "Algebraic data types", "Type classes", "Lazy evaluation", "Monads"]],
+    ["Matrix Algebra", 5, "Exam", "confirmed", "2026-10-21", "Mathematics", 34, 8,
+      ["Gaussian elimination", "Vector spaces", "Linear maps", "Determinants", "Eigenvalues & eigenvectors", "Diagonalisation", "Orthogonality & least squares"]],
+    ["Statistic II", 3, "Exam", "confirmed", "2026-11-02", "Mathematics", 22, 2,
+      ["Point estimators", "Confidence intervals", "Hypothesis testing", "ANOVA", "Linear regression", "Nonparametric tests"]],
+    ["Differential Calculus", 3, "Exam", "tbd", null, "Mathematics", 20, 4,
+      ["Limits", "Derivatives", "Applications of derivatives", "Optimization", "Related rates", "Curve analysis"]],
+    ["Fundamental of AI", 6, "Exam", "confirmed", "2026-12-22", "Computer Science", 40, 3,
+      ["Search & heuristics", "Knowledge representation", "Probabilistic reasoning", "Machine learning basics", "Neural networks", "Ethics & AI safety"]],
+    ["Computer Networks II", 3, "Exam", "tbd", null, "Computer Science", 24, 0,
+      ["Routing protocols", "TCP congestion control", "Network security", "QoS & traffic shaping", "Software-defined networking", "Wireless & mobile"]]
+  ].map((r, i) => ({
+    // stable ids: if two viewers ever seed at once they write the same
+    // documents instead of two copies of the semester
+    id: "c" + String(i + 1).padStart(2, "0"),
+    name: r[0], credits: r[1], assessment: r[2], dateState: r[3],
+    examDate: r[4], estimatedDate: null, group: r[5],
+    prep: { est: r[6], done: r[7], topics: T(r[8]) },
+    deliverables: []
+  }));
+
+  const work = (title, due, h, doneH) => ({ id: uid("d"), title, due, hours: h, doneHours: doneH || 0, done: false });
+  raw.push({
+    id: "c08", name: "Managing Digital Transformation", credits: 6,
+    assessment: "Exercises / Coursework", dateState: "none", examDate: null, estimatedDate: null,
+    group: "Digital Business", prep: { est: 0, done: 0, topics: [] },
+    deliverables: [work("Case study analysis", "2026-10-16", 10, 2), work("Group presentation", "2026-11-13", 8, 0), work("Final portfolio", "2026-12-18", 14, 0)]
+  });
+  raw.push({
+    id: "c09", name: "User-Centric Engineering", credits: 6,
+    assessment: "Exercises / Coursework", dateState: "none", examDate: null, estimatedDate: null,
+    group: "Digital Business", prep: { est: 0, done: 0, topics: [] },
+    deliverables: [work("Personas & journey map", "2026-10-09", 6, 3), work("Prototype v1", "2026-10-30", 12, 0), work("Usability test report", "2026-11-27", 10, 0), work("Final design hand-in", "2027-01-15", 12, 0)]
+  });
+  raw.push({
+    id: "c10", name: "Impact and Benefits of Digitalization", credits: 6,
+    assessment: "Coursework", dateState: "none", examDate: null, estimatedDate: null,
+    group: "Digital Business", prep: { est: 0, done: 0, topics: [] },
+    deliverables: [work("Literature review", "2026-11-06", 8, 0), work("Final report", null, 18, 0)]
+  });
+  return raw;
+}
+
+const DEFAULT_SETTINGS = {
+  semester: "Winter semester 2026/27",
+  capacity: [3, 3, 3, 3, 2, 4, 3],       // Mon…Sun, hours of exam prep per day
+  reserveShare: 0.25,                     // share of each day held back for later exams
+  clusterWindow: 14,                      // days — exams closer than this chain into one period
+  clusterMin: 3,                          // exams in a chain before it counts as high-density
+  tightGap: 2,                            // days between exams that counts as a tight turnaround
+  reminders: [30, 14, 7, 3, 1],           // days before a confirmed exam
+  workReminders: [7, 3, 1],               // days before a coursework deadline
+  groupsOn: true
+};
+
+/* ==========================================================================
+   State + storage. Prefers the artifact db; falls back to this browser.
+   ========================================================================== */
+const state = { courses: [], settings: { ...DEFAULT_SETTINGS }, ready: false, backend: "local" };
+let DB = null;
+const LS = "scd.v1";
+
+/** Snapshots are frozen — clone before normalising or editing. */
+const hydrate = d => normaliseCourse(JSON.parse(JSON.stringify({ id: d.id, ...(d.data() || {}) })));
+
+function normaliseCourse(c) {
+  c.prep = c.prep || { est: 0, done: 0, topics: [] };
+  c.prep.est = Number(c.prep.est) || 0;
+  c.prep.done = Number(c.prep.done) || 0;
+  c.prep.topics = Array.isArray(c.prep.topics) ? c.prep.topics : [];
+  c.deliverables = Array.isArray(c.deliverables) ? c.deliverables : [];
+  c.credits = Number(c.credits) || 0;
+  if (!["confirmed", "tbd", "none"].includes(c.dateState)) c.dateState = "tbd";
+  if (c.dateState !== "confirmed") c.examDate = null;
+  if (c.dateState !== "tbd") c.estimatedDate = null;
+  return c;
+}
+
+async function boot() {
+  try { DB = await Promise.race([window.claude?.use?.("db") ?? null, new Promise(r => setTimeout(() => r(null), 9000))]); }
+  catch { DB = null; }
+
+  if (DB) {
+    try {
+      const s = await DB.doc("settings/app").get();
+      if (s && s.exists) Object.assign(state.settings, s.data() || {});
+      const snap = await DB.collection("courses").get();
+      const rows = (snap?.docs || []).map(hydrate);
+      if (rows.length) {
+        state.courses = rows.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+      } else {
+        state.courses = seedCourses();
+        await pushAll();
+      }
+      state.backend = "db";
+      DB.collection("courses").onSnapshot?.(snap2 => {
+        if (suppressSnapshot) return;
+        const rows2 = (snap2?.docs || []).map(hydrate);
+        if (!rows2.length) return;
+        state.courses = rows2.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+        render();
+      });
+    } catch (e) { DB = null; }
+  }
+  if (!DB) {
+    try {
+      const saved = JSON.parse(localStorage.getItem(LS) || "null");
+      if (saved && Array.isArray(saved.courses) && saved.courses.length) {
+        state.courses = saved.courses.map(normaliseCourse);
+        Object.assign(state.settings, saved.settings || {});
+      } else state.courses = seedCourses();
+    } catch { state.courses = seedCourses(); }
+    state.backend = "local";
+  }
+  state.ready = true;
+  render();
+}
+
+let suppressSnapshot = false;
+let saveTimer = null;
+function save(course) {
+  if (DB) {
+    suppressSnapshot = true;
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => { suppressSnapshot = false; }, 1500);
+    try {
+      if (course) {
+        const { id, ...rest } = course;
+        rest.order = state.courses.findIndex(c => c.id === id);
+        DB.doc("courses/" + id).set(rest);
+      }
+      DB.doc("settings/app").set({ ...state.settings });
+    } catch {}
+  } else {
+    try { localStorage.setItem(LS, JSON.stringify({ courses: state.courses, settings: state.settings })); } catch {}
+  }
+}
+async function pushAll() {
+  if (!DB) { save(); return; }
+  suppressSnapshot = true;
+  try {
+    for (let i = 0; i < state.courses.length; i++) {
+      const { id, ...rest } = state.courses[i];
+      rest.order = i;
+      await DB.doc("courses/" + id).set(rest);
+    }
+    await DB.doc("settings/app").set({ ...state.settings });
+  } catch {}
+  setTimeout(() => { suppressSnapshot = false; }, 800);
+}
+async function removeRemote(id) {
+  if (DB) { suppressSnapshot = true; try { await DB.doc("courses/" + id).delete(); } catch {} setTimeout(() => { suppressSnapshot = false; }, 800); }
+  else save();
+}
+
+/* ==========================================================================
+   THE ENGINE — every derived number on the deck comes from computeAll()
+   ========================================================================== */
+
+/** The date the planner should actually work towards, and how solid it is. */
+function schedule(c) {
+  if (c.dateState === "confirmed" && c.examDate) return { date: c.examDate, firm: true };
+  if (c.dateState === "tbd" && c.estimatedDate) return { date: c.estimatedDate, firm: false };
+  return { date: null, firm: false };
+}
+const remaining = c => Math.max(0, (c.prep.est || 0) - (c.prep.done || 0));
+const workLeft = d => Math.max(0, (d.hours || 0) - (d.doneHours || 0));
+const dailyAvg = s => s.capacity.reduce((a, b) => a + b, 0) / 7;
+
+/**
+ * Day-by-day allocation of study capacity.
+ * Priority follows the required rate (hours left / days left), but the
+ * nearest deadline can never take more than (1 - reserveShare) of a day
+ * while anything else is still open — that is the reserve rule that keeps
+ * later exams alive while an earlier one is bearing down.
+ */
+function buildPlan(S) {
+  const T = today();
+  const items = [];
+  for (const c of state.courses) {
+    const sch = schedule(c);
+    if (sch.date) {
+      const rem = remaining(c), dl = parseD(sch.date);
+      if (rem > 0 && dayDiff(T, dl) >= 0)
+        items.push({ key: "e:" + c.id, kind: "exam", cid: c.id, label: c.name, name: c.name, need: rem, last: addDays(dl, -1), due: dl, firm: sch.firm });
+    }
+    for (const d of c.deliverables) {
+      const dl = parseD(d.due);
+      const rem = workLeft(d);
+      if (dl && !d.done && rem > 0 && dayDiff(T, dl) >= 0)
+        items.push({ key: "w:" + c.id + ":" + d.id, kind: "work", cid: c.id, label: c.name + " · " + d.title, name: d.title, need: rem, last: dl, due: dl, firm: true });
+    }
+  }
+  const alloc = {}, open = items.map(i => ({ ...i, left: i.need }));
+  items.forEach(i => alloc[i.key] = 0);
+  const horizon = items.reduce((m, i) => Math.max(m, dayDiff(T, i.last)), 0);
+  const days = [];
+
+  for (let n = 0; n <= horizon; n++) {
+    const date = addDays(T, n);
+    const cap = S.capacity[dowMon(date)] || 0;
+    const parts = {};
+    const active = open.filter(i => i.left > 1e-6 && dayDiff(date, i.last) >= 0);
+    if (cap > 0 && active.length) {
+      active.forEach(i => { i.rate = i.left / Math.max(1, dayDiff(date, i.last) + 1); });
+      active.sort((a, b) => a.last - b.last || b.rate - a.rate);
+      const totalRate = active.reduce((s, i) => s + i.rate, 0);
+      const share = {};
+      active.forEach(i => share[i.key] = totalRate > 0 ? cap * (i.rate / totalRate) : cap / active.length);
+      if (active.length > 1 && S.reserveShare > 0) {
+        const first = active[0], ceiling = cap * (1 - S.reserveShare);
+        if (share[first.key] > ceiling) {
+          let spill = share[first.key] - ceiling;
+          share[first.key] = ceiling;
+          const rest = active.slice(1), rr = rest.reduce((s, i) => s + i.rate, 0);
+          rest.forEach(i => share[i.key] += rr > 0 ? spill * (i.rate / rr) : spill / rest.length);
+        }
+      }
+      let spare = 0;
+      active.forEach(i => { const give = Math.min(share[i.key], i.left); spare += share[i.key] - give; share[i.key] = give; });
+      for (const i of active) { if (spare <= 1e-6) break; const room = i.left - share[i.key]; const g = Math.min(room, spare); share[i.key] += g; spare -= g; }
+      active.forEach(i => { const g = share[i.key]; if (g > 1e-6) { i.left -= g; alloc[i.key] += g; parts[i.key] = g; } });
+    }
+    days.push({ date, cap, parts, total: Object.values(parts).reduce((a, b) => a + b, 0) });
+  }
+  return { items, alloc, days, horizon };
+}
+
+/** Chains of exams that sit close enough together to fight for the same weeks. */
+function findClusters(exams, S) {
+  const sorted = exams.filter(e => e.sched.date).sort((a, b) => parseD(a.sched.date) - parseD(b.sched.date));
+  const chains = [];
+  let cur = [];
+  for (const e of sorted) {
+    if (!cur.length) { cur = [e]; continue; }
+    const gap = dayDiff(parseD(cur[cur.length - 1].sched.date), parseD(e.sched.date));
+    if (gap <= S.clusterWindow) cur.push(e); else { chains.push(cur); cur = [e]; }
+  }
+  if (cur.length) chains.push(cur);
+  return chains.filter(ch => ch.length >= 2).map(ch => {
+    const from = parseD(ch[0].sched.date), to = parseD(ch[ch.length - 1].sched.date);
+    const span = dayDiff(from, to) + 1;
+    const load = ch.reduce((s, e) => s + e.remaining, 0);
+    const T = today();
+    // capacity between now (or the start of the run-up) and the last exam
+    const runStart = T;
+    let capacity = 0;
+    for (let d = new Date(runStart); d <= to; d = addDays(d, 1)) capacity += S.capacity[dowMon(d)] || 0;
+    const dense = ch.length >= S.clusterMin || (span <= 4 && ch.length >= 2);
+    return { exams: ch, from, to, span, load, capacity, dense, provisional: ch.some(e => !e.sched.firm),
+      pressure: capacity > 0 ? load / capacity : 2 };
+  });
+}
+
+/** Preparation milestones walked back from the exam date. */
+function milestones(c, sch, S) {
+  if (!sch.date) return [];
+  const exam = parseD(sch.date), T = today();
+  const est = c.prep.est || 0;
+  const lead = Math.min(70, Math.max(14, Math.ceil(est / Math.max(0.4, dailyAvg(S)) * 1.7)));
+  const start = addDays(exam, -lead);
+  const at = f => addDays(start, Math.round(lead * f));
+  const out = [
+    { f: 0.00, title: "Start preparation", kind: "phase" },
+    { f: 0.35, title: "First pass through every topic", kind: "phase" },
+    { f: 0.60, title: "Past papers & problem sets", kind: "phase" },
+    { f: 0.80, title: "Close gaps on weakest topics", kind: "phase" },
+    { f: 0.92, title: "Full mock exam, timed", kind: "phase" },
+    { f: 1.00, title: "Final review — formulas & summaries", kind: "phase" }
+  ].map(m => ({ ...m, date: m.f === 1 ? addDays(exam, -1) : at(m.f) }));
+  // topic checkpoints spread across the first-pass window
+  const topics = c.prep.topics || [];
+  topics.forEach((t, i) => {
+    const f = topics.length === 1 ? 0.3 : 0.08 + (0.5 * i) / Math.max(1, topics.length - 1);
+    out.push({ f, title: "Cover: " + t.name, kind: "topic", done: t.done, date: at(f) });
+  });
+  return out.sort((a, b) => a.date - b.date).map(m => ({ ...m, iso: iso(m.date), past: m.date < T }));
+}
+
+function computeAll() {
+  const S = state.settings, T = today();
+  const plan = buildPlan(S);
+  const byKey = k => plan.alloc[k] || 0;
+
+  const courses = state.courses.map(c => {
+    const sch = schedule(c);
+    const rem = remaining(c);
+    const isExam = c.dateState !== "none";
+    const avail = byKey("e:" + c.id);
+    // an exam with no date isn't short of time — it simply isn't in the plan yet
+    const deficit = sch.date ? Math.max(0, rem - avail) : 0;
+    const days = sch.date ? dayDiff(T, parseD(sch.date)) : null;
+    const topics = c.prep.topics || [];
+    const topicsDone = topics.filter(t => t.done).length;
+    const prepFrac = c.prep.est > 0 ? Math.min(1, (c.prep.done || 0) / c.prep.est) : (topics.length ? topicsDone / topics.length : 0);
+
+    // time slip: how far through the recommended prep window we are vs. how much is done
+    let slip = 0, lead = null;
+    if (sch.date) {
+      lead = Math.min(70, Math.max(14, Math.ceil((c.prep.est || 0) / Math.max(0.4, dailyAvg(S)) * 1.7)));
+      const start = addDays(parseD(sch.date), -lead);
+      const elapsed = Math.max(0, Math.min(1, dayDiff(start, T) / lead));
+      slip = Math.max(0, elapsed - prepFrac);
+    }
+
+    const work = c.deliverables.map(d => {
+      const wl = workLeft(d), av = byKey("w:" + c.id + ":" + d.id);
+      return { ...d, left: wl, avail: av, deficit: d.due && !d.done ? Math.max(0, wl - av) : 0,
+        days: d.due ? dayDiff(T, parseD(d.due)) : null, overdue: !!(d.due && !d.done && dayDiff(T, parseD(d.due)) < 0) };
+    });
+    const workLeftTotal = work.filter(w => !w.done).reduce((s, w) => s + w.left, 0);
+    const workDeficit = work.reduce((s, w) => s + w.deficit, 0);
+    const workDone = c.deliverables.length ? c.deliverables.filter(d => d.done).length : 0;
+
+    return { ...c, sched: sch, isExam, remaining: rem, avail, deficit, days, topicsDone,
+      topicCount: topics.length, prepFrac, slip, lead, work, workLeftTotal, workDeficit, workDone,
+      coverage: rem > 0 ? avail / rem : 1 };
+  });
+
+  const exams = courses.filter(c => c.isExam);
+  const clusters = findClusters(exams.filter(e => e.sched.date), S);
+
+  // conflicts
+  const conflicts = [];
+  const sched = exams.filter(e => e.sched.date).sort((a, b) => parseD(a.sched.date) - parseD(b.sched.date));
+  for (let i = 0; i < sched.length - 1; i++) {
+    const a = sched[i], b = sched[i + 1];
+    const gap = dayDiff(parseD(a.sched.date), parseD(b.sched.date));
+    if (gap === 0) conflicts.push({ level: "crit", title: "Two exams on the same day", detail: `${a.name} and ${b.name} both fall on ${fmtLong(a.sched.date)}.`, ids: [a.id, b.id] });
+    else if (gap <= S.tightGap) conflicts.push({ level: "high", title: "Tight turnaround", detail: `${gap} day${gap === 1 ? "" : "s"} between ${a.name} (${fmtShort(a.sched.date)}) and ${b.name} (${fmtShort(b.sched.date)}) — the second exam gets almost no dedicated run-up.`, ids: [a.id, b.id] });
+  }
+  for (const c of courses) for (const w of c.work) {
+    if (w.done || !w.due) continue;
+    for (const e of sched) {
+      const g = Math.abs(dayDiff(parseD(w.due), parseD(e.sched.date)));
+      if (g <= 3 && e.id !== c.id) conflicts.push({ level: "mod", title: "Deadline lands on an exam run-up", detail: `“${w.title}” (${c.name}) is due ${fmtShort(w.due)}, ${g === 0 ? "the same day as" : g + " day" + (g === 1 ? "" : "s") + " from"} ${e.name}.`, ids: [c.id, e.id] });
+    }
+  }
+
+  // risk score per exam course
+  for (const c of courses) {
+    if (!c.isExam) {
+      let s = 0;
+      c.work.forEach(w => { if (w.overdue) s += 45; else if (w.deficit > 0.5) s += 20 + Math.min(35, w.deficit * 3); });
+      c.risk = { score: s, ...band(s), reasons: c.work.filter(w => w.overdue || w.deficit > 0.5).map(w => w.overdue ? `“${w.title}” is overdue` : `“${w.title}” short by ${hrs(w.deficit)}`) };
+      continue;
+    }
+    if (!c.sched.date) { c.risk = { score: null, key: "tbd", label: "Unscheduled", cls: "tbd", reasons: [] }; continue; }
+    const reasons = [];
+    let s = 0;
+    if (c.deficit > 0.5) { s += (1 - c.coverage) * 120; reasons.push(`Study plan is ${hrs(c.deficit)} short of the ${hrs(c.remaining)} still needed`); }
+    if (c.slip > 0.02) { s += c.slip * 55; reasons.push(`${pct(c.slip)} behind the recommended pace for this exam window`); }
+    const cl = clusters.find(x => x.exams.some(e => e.id === c.id));
+    if (cl && cl.dense) { s += Math.min(22, 8 * (cl.exams.length - 1)); reasons.push(`Sits inside a ${cl.exams.length}-exam period (${fmtShort(iso(cl.from))} – ${fmtShort(iso(cl.to))})`); }
+    if (conflicts.some(k => k.ids.includes(c.id) && k.level !== "mod")) { s += 13; reasons.push("Clashes with a neighbouring exam"); }
+    if (!c.sched.firm) reasons.push("Based on your expected date — not yet confirmed");
+    if (c.days !== null && c.days <= 7 && c.coverage < 1) { s += 10; }
+    c.risk = { score: Math.round(s), ...band(s), reasons, provisional: !c.sched.firm };
+  }
+
+  // groups
+  const gmap = new Map();
+  for (const c of courses) {
+    const g = c.group || "Ungrouped";
+    if (!gmap.has(g)) gmap.set(g, []);
+    gmap.get(g).push(c);
+  }
+  const groups = [...gmap.entries()].map(([name, list]) => {
+    const credits = list.reduce((s, c) => s + c.credits, 0);
+    const upcoming = list.filter(c => c.isExam && c.sched.firm && c.days >= 0).length;
+    const unsched = list.filter(c => c.isExam && !c.sched.date).length;
+    const remH = list.reduce((s, c) => s + c.remaining + c.workLeftTotal, 0);
+    const estH = list.reduce((s, c) => s + (c.prep.est || 0) + c.deliverables.reduce((a, d) => a + (d.hours || 0), 0), 0);
+    const doneH = list.reduce((s, c) => s + (c.prep.done || 0) + c.deliverables.reduce((a, d) => a + (d.doneHours || 0), 0), 0);
+    const worst = list.reduce((m, c) => (c.risk.score !== null && RANK[c.risk.key] > RANK[m]) ? c.risk.key : m, "low");
+    const nextC = list.filter(c => c.sched.date && c.days >= 0).sort((a, b) => a.days - b.days)[0];
+    return { name, list, credits, upcoming, unsched, remH, estH, doneH,
+      prepFrac: estH > 0 ? doneH / estH : 0, risk: worst, riskLabel: BANDS.find(b => b.key === worst).label, next: nextC || null };
+  }).sort((a, b) => b.credits - a.credits);
+
+  // reminders + calendar events
+  const events = [];
+  for (const c of courses) {
+    if (c.sched.date) {
+      events.push({ date: c.sched.date, type: c.sched.firm ? "exam" : "prov", title: c.name, cid: c.id,
+        note: c.sched.firm ? "Exam" : "Expected exam (not confirmed)" });
+      if (c.sched.firm) {
+        for (const off of S.reminders) {
+          const d = addDays(parseD(c.sched.date), -off);
+          if (dayDiff(T, d) >= 0) events.push({ date: iso(d), type: "rem", title: `${c.name} — T‑minus ${off}d`, cid: c.id, note: `Reminder · ${off} days to ${c.name}` });
+        }
+        milestones(c, c.sched, S).forEach(m => { if (dayDiff(T, m.date) >= -30) events.push({ date: m.iso, type: "mile", title: `${c.name}: ${m.title}`, cid: c.id, note: m.title }); });
+      }
+    }
+    for (const w of c.work) {
+      if (!w.due) continue;
+      events.push({ date: w.due, type: "due", title: `${w.title} — ${c.name}`, cid: c.id, note: w.done ? "Submitted" : "Due", done: w.done });
+      if (!w.done) for (const off of S.workReminders) {
+        const d = addDays(parseD(w.due), -off);
+        if (dayDiff(T, d) >= 0) events.push({ date: iso(d), type: "rem", title: `${w.title} — ${off}d left`, cid: c.id, note: `Reminder · ${off} days to hand-in` });
+      }
+    }
+  }
+
+  // weekly workload
+  const weeks = [];
+  let wStart = weekStart(T);
+  const lastDay = plan.days.length ? plan.days[plan.days.length - 1].date : T;
+  for (let w = 0; w < 26 && wStart <= lastDay; w++) {
+    const wEnd = addDays(wStart, 6);
+    const dayRows = plan.days.filter(d => d.date >= wStart && d.date <= wEnd);
+    const parts = {};
+    let total = 0, capacity = 0;
+    dayRows.forEach(d => { capacity += d.cap; for (const k in d.parts) { parts[k] = (parts[k] || 0) + d.parts[k]; total += d.parts[k]; } });
+    if (w === 0) capacity = plan.days.filter(d => d.date >= T && d.date <= wEnd).reduce((s, d) => s + d.cap, 0);
+    const ev = events.filter(e => { const d = parseD(e.date); return d >= wStart && d <= wEnd && (e.type === "exam" || e.type === "prov" || e.type === "due"); });
+    weeks.push({ start: wStart, end: wEnd, parts, total, capacity, events: ev });
+    wStart = addDays(wStart, 7);
+  }
+
+  const upcomingExams = exams.filter(e => e.sched.date && e.days >= 0).sort((a, b) => a.days - b.days);
+  const tbd = courses.filter(c => (c.isExam && !c.examDate) || c.work.some(w => !w.due && !w.done));
+  const totals = {
+    credits: courses.reduce((s, c) => s + c.credits, 0),
+    examCount: exams.length,
+    confirmed: exams.filter(e => e.dateState === "confirmed").length,
+    unscheduled: exams.filter(e => e.dateState === "tbd").length,
+    noExam: courses.filter(c => !c.isExam).length,
+    remainingH: courses.reduce((s, c) => s + c.remaining + c.workLeftTotal, 0),
+    deficitH: courses.reduce((s, c) => s + c.deficit + c.workDeficit, 0),
+    // hours that have nowhere to sit yet because the date is unknown
+    unplannedH: courses.reduce((s, c) => s + (c.isExam && !c.sched.date ? c.remaining : 0)
+      + c.work.filter(w => !w.due && !w.done).reduce((a, w) => a + w.left, 0), 0),
+    weekly: S.capacity.reduce((a, b) => a + b, 0)
+  };
+  const worstRisk = courses.reduce((m, c) => (c.risk.score !== null && RANK[c.risk.key] > RANK[m]) ? c.risk.key : m, "low");
+
+  return { courses, exams, clusters, conflicts, groups, events, weeks, plan, upcomingExams, tbd, totals, worstRisk, S, T };
+}
+
+/* ==========================================================================
+   Rendering
+   ========================================================================== */
+let VIEW = "dash";
+let calCursor = null;
+let M = null;
+
+const NAV = [
+  { id: "dash", label: "Dashboard", icon: '<path d="M3 13h6V3H3zM13 21h8V11h-8zM13 7h8V3h-8zM3 21h6v-4H3z"/>' },
+  { id: "courses", label: "Courses", icon: '<path d="M4 4h16v16H4z"/><path d="M4 9h16M9 4v16"/>' },
+  { id: "calendar", label: "Calendar", icon: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>' },
+  { id: "planner", label: "Study plan", icon: '<path d="M4 19V5M4 19h16"/><path d="M8 16V9M12 16v-4M16 16v-8"/>' },
+  { id: "groups", label: "Subject areas", icon: '<circle cx="8" cy="8" r="4"/><circle cx="16" cy="16" r="4"/><path d="M12 8h4a0 0 0 010 0M8 12v4"/>' },
+  { id: "settings", label: "Settings", icon: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.6 1.6 0 00-1.8-.3 1.6 1.6 0 00-1 1.5V21a2 2 0 11-4 0v-.1A1.6 1.6 0 008 19.4a1.6 1.6 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.6 1.6 0 00.3-1.8 1.6 1.6 0 00-1.5-1H2a2 2 0 110-4h.1A1.6 1.6 0 004.6 8a1.6 1.6 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.6 1.6 0 001.8.3H9a1.6 1.6 0 001-1.5V2a2 2 0 114 0v.1a1.6 1.6 0 001 1.5 1.6 1.6 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.6 1.6 0 00-.3 1.8V9a1.6 1.6 0 001.5 1H22a2 2 0 110 4h-.1a1.6 1.6 0 00-1.5 1z"/>' }
+];
+const svgIc = p => `<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
+
+function render() {
+  if (!state.ready) return;
+  M = computeAll();
+  renderRail();
+  renderClock();
+  document.getElementById("semLabel").textContent = state.settings.semester;
+  ({ dash: renderDash, courses: renderCourses, calendar: renderCalendar, planner: renderPlanner, groups: renderGroups, settings: renderSettings })[VIEW]();
+  for (const n of NAV) document.getElementById("v-" + n.id).hidden = n.id !== VIEW;
+}
+
+function renderClock() {
+  const T = M.T, next = M.upcomingExams[0];
+  document.getElementById("clock").innerHTML = `
+    <div class="cell"><b>${T.getDate()} ${MON[T.getMonth()].slice(0, 3)}</b><span>Today</span></div>
+    <div class="cell"><b>${next ? next.days + " d" : "—"}</b><span>${next ? "To " + (next.name.length > 16 ? next.name.slice(0, 15) + "…" : next.name) : "No exam set"}</span></div>
+    <div class="cell"><b>${M.totals.confirmed}/${M.totals.examCount}</b><span>Dates confirmed</span></div>`;
+}
+
+function renderRail() {
+  const tally = { dash: "", courses: state.courses.length, calendar: M.upcomingExams.length,
+    planner: Math.round(M.totals.remainingH) + "h", groups: M.groups.length, settings: "" };
+  document.getElementById("rail").innerHTML =
+    `<div class="eyebrow">Control</div>` +
+    NAV.map(n => `<button class="navb" type="button" data-nav="${n.id}" aria-current="${VIEW === n.id}">${svgIc(n.icon)}<span>${n.label}</span>${tally[n.id] !== "" ? `<span class="tally">${tally[n.id]}</span>` : ""}</button>`).join("") +
+    `<div style="margin-top:auto;padding:14px 10px 0">
+       <div class="statusbar"><span class="led ${state.backend === "local" ? "local" : ""}"></span>${state.backend === "db" ? "Synced" : "Saved in this browser"}</div>
+     </div>`;
+}
+
+/* ---------- shared fragments ---------- */
+function riskChip(r) {
+  if (r.key === "tbd") return `<span class="chip tbd"><span class="g"></span>Date TBD</span>`;
+  return `<span class="chip ${r.cls}"><span class="g"></span>${r.label}${r.provisional ? " ·  est." : ""}</span>`;
+}
+function dateChip(c) {
+  if (c.dateState === "none") return `<span class="chip none">No exam</span>`;
+  if (c.dateState === "tbd") return `<span class="chip tbd"><span class="g"></span>${c.estimatedDate ? "Expected " + fmtShort(c.estimatedDate) : "Exam date TBD"}</span>`;
+  return `<span class="chip plain">${fmtLong(c.examDate)}</span>`;
+}
+function meter(frac, deficitFrac) {
+  const a = Math.round(Math.max(0, Math.min(1, frac)) * 100);
+  const b = Math.round(Math.max(0, Math.min(1 - frac, deficitFrac || 0)) * 100);
+  return `<span class="meter" role="img" aria-label="${a}% prepared"><i style="width:${a}%"></i><i class="gap" style="width:${b}%"></i></span>`;
+}
+
+/* ---------- dashboard ---------- */
+function renderDash() {
+  const t = M.totals;
+  const alerts = [];
+  M.clusters.filter(c => c.dense).forEach(cl => {
+    alerts.push(`<div class="alert ${cl.pressure > 1 ? "crit" : "high"}">
+      ${svgIc('<path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/>').replace('class="ic"', 'class="ico"')}
+      <span class="txt"><b>High-density exam period</b>
+      <p>${cl.exams.length} exams between <strong>${fmtLong(iso(cl.from))}</strong> and <strong>${fmtLong(iso(cl.to))}</strong> — ${cl.span} days. They need <strong class="mono">${hrs(cl.load)}</strong> of preparation against <strong class="mono">${hrs(cl.capacity)}</strong> of capacity before the last one${cl.pressure > 1 ? `, so roughly <strong class="mono">${hrs(cl.load - cl.capacity)}</strong> more than you have.` : "."}
+      ${cl.provisional ? " One of these dates is an estimate, not confirmed." : ""}</p>
+      <p class="mono" style="font-size:11.5px">${cl.exams.map(e => `${fmtShort(e.sched.date)} ${e.name}`).join("  ·  ")}</p></span></div>`);
+  });
+  M.conflicts.slice(0, 4).forEach(k => {
+    alerts.push(`<div class="alert ${k.level}">${svgIc('<path d="M12 9v4M12 17h.01"/><circle cx="12" cy="12" r="9"/>').replace('class="ic"', 'class="ico"')}
+      <span class="txt"><b>${k.title}</b><p>${esc(k.detail)}</p></span></div>`);
+  });
+  if (!alerts.length) alerts.push(`<div class="alert low">${svgIc('<path d="M20 6L9 17l-5-5"/>').replace('class="ic"', 'class="ico"')}<span class="txt"><b>No clashes detected</b><p>No exams sit close enough together to compete for the same weeks, and nothing is short of study time.</p></span></div>`);
+
+  document.getElementById("v-dash").innerHTML = `
+  <div class="kpis">
+    <div class="kpi"><span class="lab">Credits this term</span><b>${t.credits}</b><span class="note">ECTS across ${state.courses.length} courses</span></div>
+    <div class="kpi"><span class="lab">Exam dates</span><b>${t.confirmed}<span style="color:var(--ink-3);font-size:15px">/${t.examCount}</span></b><span class="note">${t.unscheduled} still TBD · ${t.noExam} coursework-only</span></div>
+    <div class="kpi"><span class="lab">Work remaining</span><b>${Math.round(t.remainingH)}<span style="font-size:14px;color:var(--ink-3)"> h</span></b><span class="note">${t.weekly} h/week of capacity${t.unplannedH > 0.5 ? ` · ${Math.round(t.unplannedH)} h waiting on a date` : ""}</span></div>
+    <div class="kpi"><span class="lab">Shortfall</span><b style="color:${t.deficitH > 0.5 ? "var(--crit-ink)" : "var(--good-ink)"}">${t.deficitH > 0.5 ? Math.round(t.deficitH * 10) / 10 : 0}<span style="font-size:14px"> h</span></b><span class="note">${t.deficitH > 0.5 ? "More than the plan can find before the deadlines" : "Everything dated fits inside your capacity"}</span></div>
+    <div class="kpi"><span class="lab">Overall risk</span><b style="font-size:17px;padding-top:4px">${riskChip({ key: M.worstRisk, cls: M.worstRisk, label: BANDS.find(b => b.key === M.worstRisk).label })}</b><span class="note">Worst course on the board</span></div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:12px">${alerts.join("")}</div>
+
+  <div class="module">
+    <header><h2>Exam density</h2><span class="sub">Shaded bands are periods where exams chain together within ${M.S.clusterWindow} days</span></header>
+    <div class="body">${densityStrip()}</div>
+  </div>
+
+  <div class="cols">
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <div class="module">
+        <header><h2>Countdown</h2><span class="sub">${M.upcomingExams.length} scheduled ahead</span></header>
+        <div class="body flush"><div class="readouts">${M.upcomingExams.length ? M.upcomingExams.map(readout).join("") : `<div class="empty">No exam has a date yet. Set one below and the whole deck comes alive.</div>`}</div></div>
+      </div>
+
+      <div class="module">
+        <header><h2>Weekly workload</h2><span class="sub">Hours the plan assigns vs. hours you have</span></header>
+        <div class="body" style="position:relative">${weeklyChart(M.weeks.slice(0, 14))}</div>
+        <div class="legend">
+          <span><i style="background:var(--accent)"></i>Assigned study hours</span>
+          <span><i style="background:var(--surface-3);border:1px solid var(--line-2)"></i>Unused capacity</span>
+          <span><i style="background:var(--crit)"></i>Exam that week</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <div class="module">
+        <header><h2>Awaiting a date</h2><span class="sub">${M.tbd.length} item${M.tbd.length === 1 ? "" : "s"}</span></header>
+        <div class="body">
+          ${M.tbd.length ? `<div class="tbdgrid">${M.tbd.map(tbdCard).join("")}</div>
+          <p class="hint" style="margin:12px 0 0">Nothing is counted down, reminded, or risk-scored from a TBD date. The moment you enter one, the countdown, calendar entries, reminders, milestones, risk and workload all recalculate.</p>` : `<div class="empty">Every exam and hand-in has a date.</div>`}
+        </div>
+      </div>
+
+      <div class="module">
+        <header><h2>Risk board</h2></header>
+        <div class="body flush"><div class="tblwrap"><table>
+          <thead><tr><th>Course</th><th>Date</th><th style="text-align:right">Left</th><th style="text-align:right">Planned</th><th>Status</th></tr></thead>
+          <tbody>${M.courses.slice().sort((a, b) => (b.risk.score ?? -1) - (a.risk.score ?? -1)).map(riskRow).join("")}</tbody>
+        </table></div></div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function readout(c) {
+  const sev = c.risk.key === "crit" ? "sev sev-crit" : c.risk.key === "high" ? "sev sev-high" : c.risk.key === "mod" ? "sev sev-mod" : "sev";
+  return `<div class="readout ${sev}">
+    <div class="cd"><b>${c.days}</b><span>${c.days === 1 ? "day" : "days"}${c.sched.firm ? "" : " est."}</span></div>
+    <div class="meta">
+      <div class="ttl"><b>${esc(c.name)}</b>${c.sched.firm ? "" : `<span class="chip tbd"><span class="g"></span>Not confirmed</span>`}${c.group ? `<span class="chip plain">${esc(c.group)}</span>` : ""}</div>
+      <div class="facts">
+        <span>${fmtLong(c.sched.date)}</span>
+        <span>${c.credits} ECTS</span>
+        <span>${hrs(c.prep.done)} / ${hrs(c.prep.est)} prepared</span>
+        ${c.deficit > 0 ? `<span style="color:var(--crit-ink)">short ${hrs(c.deficit)}</span>` : `<span style="color:var(--good-ink)">plan covers it</span>`}
+      </div>
+      <div style="display:flex;align-items:center;gap:9px">${meter(c.prepFrac, c.remaining > 0 ? c.deficit / Math.max(1, c.prep.est) : 0)}
+        <span class="mono" style="font-size:11px;color:var(--ink-3)">${c.topicCount ? `${c.topicsDone}/${c.topicCount} topics` : pct(c.prepFrac)}</span></div>
+    </div>
+    <div class="right">${riskChip(c.risk)}<button class="btn sm" type="button" data-edit="${c.id}">Open</button></div>
+  </div>`;
+}
+
+function tbdCard(c) {
+  const openWork = c.work.filter(w => !w.due && !w.done);
+  return `<div class="tbdcard">
+    <div class="hd"><b>${esc(c.name)}</b><span class="chip plain">${c.credits} ECTS</span></div>
+    ${c.isExam ? `
+      <div class="state">Exam date: <strong>${c.estimatedDate ? `expected ${fmtLong(c.estimatedDate)}` : "TBD"}</strong></div>
+      <div class="setrow">
+        <input type="date" id="setdate-${c.id}" aria-label="Exam date for ${esc(c.name)}" value="${c.estimatedDate || ""}" min="${iso(M.T)}">
+        <button class="btn pri sm" type="button" data-confirm="${c.id}">Set exam date</button>
+        <button class="btn sm" type="button" data-expect="${c.id}" title="Save as an expected date — no reminders are created">Expected only</button>
+      </div>
+      <div class="mono" style="font-size:11px;color:var(--ink-3)">${hrs(c.remaining)} of preparation still outstanding${c.estimatedDate ? " · planning provisionally against the expected date" : " · not yet in the study plan"}</div>
+    ` : ""}
+    ${openWork.length ? `<div class="state" style="border-top:1px solid var(--line);padding-top:9px">Deadline not announced:</div>
+      ${openWork.map(w => `<div class="setrow"><span class="mono" style="font-size:11.5px;flex:1 1 110px">${esc(w.title)}</span>
+        <input type="date" id="setwork-${c.id}-${w.id}" aria-label="Deadline for ${esc(w.title)}" min="${iso(M.T)}">
+        <button class="btn sm" type="button" data-setwork="${c.id}|${w.id}">Set</button></div>`).join("")}` : ""}
+  </div>`;
+}
+
+function riskRow(c) {
+  const left = c.remaining + c.workLeftTotal;
+  const planned = c.avail + c.work.reduce((s, w) => s + w.avail, 0);
+  return `<tr>
+    <td><span class="cname">${esc(c.name)}</span>${c.group ? `<div class="mono" style="font-size:10.5px;color:var(--ink-3)">${esc(c.group)}</div>` : ""}</td>
+    <td class="n">${c.dateState === "none" ? `<span style="color:var(--ink-3)">Coursework</span>` : c.dateState === "tbd" ? `<span style="color:var(--ink-3)">${c.estimatedDate ? "est. " + fmtShort(c.estimatedDate) : "TBD"}</span>` : fmtShort(c.examDate)}</td>
+    <td class="n" style="text-align:right">${left > 0 ? hrs(left) : "—"}</td>
+    <td class="n" style="text-align:right;color:${left - planned > 0.5 ? "var(--crit-ink)" : "var(--ink-2)"}">${left > 0 ? hrs(planned) : "—"}</td>
+    <td>${riskChip(c.risk)}</td>
+  </tr>`;
+}
+
+/* ---------- density strip ---------- */
+function densityStrip() {
+  const T = M.T;
+  const pts = M.exams.filter(e => e.sched.date).map(e => ({ ...e, d: parseD(e.sched.date) })).sort((a, b) => a.d - b.d);
+  if (!pts.length) return `<div class="empty">No exam dates yet — the density view fills in as you confirm them.</div>`;
+  const start = new Date(Math.min(T, pts[0].d)); const end = addDays(pts[pts.length - 1].d, 10);
+  const span = Math.max(1, dayDiff(start, end));
+  const x = d => ((dayDiff(start, d) / span) * 100);
+  let months = [];
+  let cur = new Date(start.getFullYear(), start.getMonth(), 1);
+  while (cur <= end) { if (cur >= start) months.push(new Date(cur)); cur = new Date(cur.getFullYear(), cur.getMonth() + 1, 1); }
+  return `<div class="strip" style="min-height:118px">
+    ${months.map(m => `<span class="mtick" style="left:${x(m)}%"></span><span class="mth" style="left:calc(${x(m)}% + 5px)">${MON[m.getMonth()].slice(0, 3)}</span>`).join("")}
+    <span class="axis"></span>
+    ${M.clusters.map(cl => `<span class="band ${cl.pressure > 1 ? "crit" : ""}" style="left:${x(cl.from)}%;width:${Math.max(1.5, x(cl.to) - x(cl.from))}%" title="${cl.exams.length} exams in ${cl.span} days"></span>`).join("")}
+    <span class="now" style="left:${x(T)}%" title="Today"></span>
+    ${pts.map((p, i) => `<span class="pin ${p.sched.firm ? "" : "prov"}" style="left:${x(p.d)}%"></span>
+      <span class="lbl" style="left:${x(p.d)}%;top:${56 + (i % 2) * 15}px">${fmtShort(p.sched.date)} · ${esc(p.name.length > 22 ? p.name.slice(0, 21) + "…" : p.name)}</span>`).join("")}
+  </div>
+  <div class="legend" style="padding:6px 0 0">
+    <span><i style="background:var(--ink)"></i>Confirmed exam</span>
+    <span><i style="background:repeating-linear-gradient(90deg,var(--ink-3) 0 2px,transparent 2px 4px)"></i>Expected date</span>
+    <span><i style="background:color-mix(in srgb,var(--serious) 30%,transparent);border:1px solid var(--serious)"></i>Exam chain</span>
+    <span><i style="background:var(--accent)"></i>Today</span>
+  </div>`;
+}
+
+/* ---------- weekly chart ---------- */
+function weeklyChart(weeks) {
+  if (!weeks.length) return `<div class="empty">Nothing to schedule yet.</div>`;
+  const W = Math.max(560, weeks.length * 62), H = 210, PL = 38, PR = 12, PT = 16, PB = 46;
+  const maxV = Math.max(...weeks.map(w => Math.max(w.capacity, w.total)), 1);
+  const ticks = [0, Math.round(maxV / 2), Math.ceil(maxV)];
+  const iw = W - PL - PR, ih = H - PT - PB;
+  const bw = iw / weeks.length;
+  const y = v => PT + ih - (v / maxV) * ih;
+  const bars = weeks.map((w, i) => {
+    const cx = PL + i * bw + bw * 0.16, bWid = bw * 0.68;
+    const capH = ih - (y(w.capacity) - PT), useH = ih - (y(w.total) - PT);
+    const hasExam = w.events.some(e => e.type === "exam" || e.type === "prov");
+    return `<g class="wkbar" data-i="${i}">
+      <rect x="${cx}" y="${y(w.capacity)}" width="${bWid}" height="${Math.max(0, capH)}" rx="3" fill="var(--surface-3)" stroke="var(--line-2)" stroke-width="1"/>
+      <rect x="${cx}" y="${y(w.total)}" width="${bWid}" height="${Math.max(0, useH)}" rx="3" fill="var(--accent)"/>
+      ${hasExam ? `<rect x="${cx}" y="${PT - 9}" width="${bWid}" height="4" rx="2" fill="var(--crit)"/>` : ""}
+      <rect x="${PL + i * bw}" y="${PT - 12}" width="${bw}" height="${ih + 12}" fill="transparent"/>
+    </g>`;
+  }).join("");
+  return `<div class="chartwrap" id="wkchart" style="position:relative">
+    <svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Study hours assigned per week against available capacity" style="max-width:100%;display:block">
+      ${ticks.map(t => `<line x1="${PL}" x2="${W - PR}" y1="${y(t)}" y2="${y(t)}" stroke="var(--grid)" stroke-width="1"/>
+        <text x="${PL - 7}" y="${y(t) + 4}" text-anchor="end" font-size="10" font-family="IBM Plex Mono, monospace" fill="var(--muted-ink)">${t}</text>`).join("")}
+      <line x1="${PL}" x2="${W - PR}" y1="${y(0)}" y2="${y(0)}" stroke="var(--axis)" stroke-width="1"/>
+      ${bars}
+      ${weeks.map((w, i) => `<text x="${PL + i * bw + bw / 2}" y="${H - PB + 17}" text-anchor="middle" font-size="10" font-family="IBM Plex Mono, monospace" fill="var(--muted-ink)">${w.start.getDate()}/${w.start.getMonth() + 1}</text>
+        ${w.events.filter(e => e.type === "exam" || e.type === "prov").slice(0, 1).map(e => `<text x="${PL + i * bw + bw / 2}" y="${H - PB + 31}" text-anchor="middle" font-size="9.5" font-family="IBM Plex Mono, monospace" fill="var(--crit-ink)">${esc(e.title.split(" ")[0])}</text>`).join("")}`).join("")}
+      <text x="${PL - 7}" y="${PT - 4}" text-anchor="end" font-size="9" font-family="IBM Plex Mono, monospace" fill="var(--muted-ink)">h</text>
+    </svg>
+    <div class="chart-tip" id="wktip" hidden></div>
+  </div>`;
+}
+
+/* ---------- courses ---------- */
+function renderCourses() {
+  document.getElementById("v-courses").innerHTML = `
+  <div class="module">
+    <header>
+      <h2>Courses</h2>
+      <span class="sub">${M.totals.credits} ECTS · ${M.totals.confirmed} confirmed · ${M.totals.unscheduled} TBD · ${M.totals.noExam} without an exam</span>
+    </header>
+    <div class="body flush">${M.courses.map(courseRow).join("")}</div>
+  </div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+    <button class="btn pri" type="button" data-add="1">+ Add course</button>
+    <button class="btn" type="button" data-reset="1">Restore semester defaults</button>
+    <span class="hint" style="flex:1 1 240px">Coursework items on the three project courses are starter examples — edit, re-date or delete them.</span>
+  </div>`;
+}
+
+function courseRow(c) {
+  const bits = [];
+  bits.push(`${c.credits} ECTS`);
+  bits.push(esc(c.assessment));
+  if (c.isExam) {
+    bits.push(c.prep.est ? `${hrs(c.prep.done)} / ${hrs(c.prep.est)} prep` : "no prep estimate");
+    if (c.topicCount) bits.push(`${c.topicsDone}/${c.topicCount} topics`);
+    if (c.days !== null && c.days >= 0) bits.push(`${c.days} days out`);
+  } else {
+    const openW = c.deliverables.filter(d => !d.done).length;
+    bits.push(`${c.deliverables.length - openW}/${c.deliverables.length} submitted`);
+    if (c.workLeftTotal) bits.push(`${hrs(c.workLeftTotal)} of work left`);
+    const nextW = c.work.filter(w => !w.done && w.due).sort((a, b) => a.days - b.days)[0];
+    if (nextW) bits.push(`next: ${esc(nextW.title)} ${fmtShort(nextW.due)}`);
+  }
+  return `<div class="crow">
+    <div class="l">
+      <div class="t"><b>${esc(c.name)}</b>${dateChip(c)}${c.group ? `<span class="chip plain">${esc(c.group)}</span>` : ""}</div>
+      <div class="d">${bits.map(b => `<span>${b}</span>`).join("")}</div>
+    </div>
+    <div class="r">${riskChip(c.risk)}<button class="btn sm" type="button" data-edit="${c.id}">Edit</button></div>
+  </div>`;
+}
+
+/* ---------- calendar ---------- */
+function renderCalendar() {
+  if (!calCursor) { const n = M.upcomingExams[0]; calCursor = n ? parseD(n.sched.date) : M.T; calCursor = new Date(calCursor.getFullYear(), calCursor.getMonth(), 1); }
+  const first = new Date(calCursor.getFullYear(), calCursor.getMonth(), 1);
+  const gridStart = weekStart(first);
+  const cells = [];
+  const dayHours = {};
+  M.plan.days.forEach(d => dayHours[iso(d.date)] = d.total);
+  for (let i = 0; i < 42; i++) {
+    const d = addDays(gridStart, i);
+    const key = iso(d);
+    const out = d.getMonth() !== calCursor.getMonth();
+    const isToday = key === iso(M.T);
+    const evs = M.events.filter(e => e.date === key);
+    const order = { exam: 0, prov: 1, due: 2, mile: 3, rem: 4 };
+    evs.sort((a, b) => order[a.type] - order[b.type]);
+    const h = dayHours[key] || 0;
+    cells.push(`<div class="cell ${out ? "out" : ""} ${isToday ? "today" : ""}">
+      <span class="dn">${d.getDate()}${isToday ? ' <span class="chip accent" style="font-size:8.5px;padding:0 5px">Today</span>' : ""}${h > 0.05 ? `<span class="hrs mono">${Math.round(h * 10) / 10}h</span>` : ""}</span>
+      ${evs.slice(0, 4).map(e => `<button class="ev ${e.type}" type="button" data-edit="${e.cid}" title="${esc(e.note)} — ${esc(e.title)}">${e.type === "exam" ? "◆ " : e.type === "prov" ? "◇ " : e.type === "due" ? "▲ " : e.type === "mile" ? "• " : "› "}${esc(e.title)}</button>`).join("")}
+      ${evs.length > 4 ? `<span class="mono" style="font-size:9.5px;color:var(--ink-3)">+${evs.length - 4} more</span>` : ""}
+    </div>`);
+  }
+  const monthEvents = M.events.filter(e => { const d = parseD(e.date); return d && d.getMonth() === calCursor.getMonth() && d.getFullYear() === calCursor.getFullYear() && (e.type === "exam" || e.type === "prov" || e.type === "due"); })
+    .sort((a, b) => a.date.localeCompare(b.date));
+
+  document.getElementById("v-calendar").innerHTML = `
+  <div class="module">
+    <header>
+      <h2>${MON[calCursor.getMonth()]} ${calCursor.getFullYear()}</h2>
+      <div style="display:flex;gap:6px;margin-left:auto;align-items:center">
+        <button class="btn sm" type="button" data-cal="-1" aria-label="Previous month">←</button>
+        <button class="btn sm" type="button" data-cal="0">Today</button>
+        <button class="btn sm" type="button" data-cal="1" aria-label="Next month">→</button>
+      </div>
+    </header>
+    <div class="body flush">
+      <div class="calhead">${WD.map(d => `<div>${d}</div>`).join("")}</div>
+      <div class="cal">${cells.join("")}</div>
+    </div>
+    <div class="legend" style="padding:12px 16px">
+      <span><i style="background:var(--crit)"></i>Exam</span>
+      <span><i style="background:var(--ink-3)"></i>Expected exam (no reminders)</span>
+      <span><i style="background:var(--warn)"></i>Hand-in due</span>
+      <span><i style="background:var(--accent)"></i>Preparation milestone</span>
+      <span><i style="background:var(--line-2)"></i>Reminder</span>
+      <span class="mono" style="color:var(--ink-3)">Corner figure = study hours the plan assigns that day</span>
+    </div>
+  </div>
+  <div class="module">
+    <header><h2>This month's fixed points</h2></header>
+    <div class="body flush">${monthEvents.length ? `<div class="tblwrap"><table><thead><tr><th>Date</th><th>What</th><th>Type</th><th></th></tr></thead><tbody>
+      ${monthEvents.map(e => `<tr><td class="n">${fmtLong(e.date)}</td><td>${esc(e.title)}</td><td><span class="chip ${e.type === "exam" ? "crit" : e.type === "prov" ? "tbd" : "mod"}"><span class="g"></span>${e.type === "exam" ? "Exam" : e.type === "prov" ? "Expected" : "Due"}</span></td>
+        <td style="text-align:right"><button class="btn sm" type="button" data-edit="${e.cid}">Open</button></td></tr>`).join("")}
+      </tbody></table></div>` : `<div class="empty">Nothing fixed in this month.</div>`}</div>
+  </div>`;
+}
+
+/* ---------- planner ---------- */
+function renderPlanner() {
+  const colorFor = (() => {
+    const ids = [...new Set(M.plan.items.map(i => i.cid))];
+    const pal = ["var(--s1)", "var(--s2)", "var(--s3)", "var(--accent)", "#4a3aa7", "#e87ba4", "#008300", "#eda100"];
+    const map = {}; ids.forEach((id, i) => map[id] = pal[i % pal.length]); return k => map[k];
+  })();
+  const labels = {}; M.plan.items.forEach(i => labels[i.key] = i);
+
+  const weeks = M.weeks.filter(w => w.total > 0.05 || w.events.length).slice(0, 18);
+  document.getElementById("v-planner").innerHTML = `
+  <div class="module">
+    <header><h2>How the plan splits your week</h2>
+      <span class="sub">${M.S.capacity.reduce((a, b) => a + b, 0)} h/week · ${pct(M.S.reserveShare)} of every day reserved for exams further out</span></header>
+    <div class="body">
+      <p class="hint" style="margin:0 0 14px">Each day's hours go to whatever has the highest required rate — hours still needed divided by days still available. The nearest exam never takes more than ${pct(1 - M.S.reserveShare)} of a day while something else is still open, so <strong>Statistic II keeps getting time while Integral Calculus is bearing down</strong>. Only courses with a date are in the plan; a TBD exam joins the moment you enter one.</p>
+      <div style="display:flex;flex-direction:column;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden">
+        ${weeks.length ? weeks.map(w => weekRow(w, labels, colorFor)).join("") : `<div class="empty" style="background:var(--surface)">Nothing scheduled — no course has both a date and outstanding hours.</div>`}
+      </div>
+    </div>
+  </div>
+  <div class="module">
+    <header><h2>Preparation milestones</h2><span class="sub">Generated backwards from each confirmed exam date</span></header>
+    <div class="body flush">${M.exams.filter(e => e.sched.date).sort((a, b) => a.days - b.days).map(milestoneBlock).join("") || `<div class="empty">No exam dates yet.</div>`}</div>
+  </div>`;
+}
+
+function weekRow(w, labels, colorFor) {
+  const entries = Object.entries(w.parts).sort((a, b) => b[1] - a[1]);
+  const max = Math.max(w.capacity, w.total, 1);
+  return `<div class="wk" style="background:var(--surface)">
+    <div class="wl"><b>${w.start.getDate()} ${MON[w.start.getMonth()].slice(0, 3)}</b><span>${Math.round(w.total * 10) / 10} of ${w.capacity} h</span>
+      ${w.events.map(e => `<span class="chip ${e.type === "exam" ? "crit" : e.type === "prov" ? "tbd" : "mod"}" style="margin-top:4px"><span class="g"></span>${e.type === "due" ? "Due" : "Exam"}</span>`).join("")}</div>
+    <div class="bars">
+      ${entries.length ? entries.map(([k, v]) => {
+        const it = labels[k];
+        return `<div class="bar"><span class="track"><i style="width:${(v / max) * 100}%;background:${colorFor(it.cid)}"></i></span>
+          <span class="lab">${hrs(v)} · ${esc(it.label.length > 38 ? it.label.slice(0, 37) + "…" : it.label)}${it.firm ? "" : " (est.)"}</span></div>`;
+      }).join("") : `<div class="bar"><span class="track"></span><span class="lab" style="color:var(--ink-3)">Free week</span></div>`}
+    </div>
+  </div>`;
+}
+
+function milestoneBlock(c) {
+  const ms = milestones(c, c.sched, M.S).filter(m => dayDiff(M.T, m.date) >= -14);
+  return `<div style="padding:14px 16px;border-bottom:1px solid var(--line)">
+    <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:9px">
+      <h3>${esc(c.name)}</h3><span class="chip plain">${fmtLong(c.sched.date)}</span>${c.sched.firm ? "" : `<span class="chip tbd"><span class="g"></span>Expected</span>`}${riskChip(c.risk)}
+      <span class="mono" style="font-size:11px;color:var(--ink-3);margin-left:auto">${c.lead}-day recommended run-up</span>
+    </div>
+    <div class="tblwrap"><table><tbody>
+      ${ms.map(m => `<tr><td class="n" style="width:96px;color:${m.past ? "var(--ink-3)" : "var(--ink-2)"}">${fmtShort(m.iso)}</td>
+        <td style="${m.past ? "color:var(--ink-3)" : ""}">${m.kind === "topic" ? "· " : "◻ "}${esc(m.title)}</td>
+        <td style="text-align:right;width:84px">${m.kind === "topic" ? (m.done ? `<span class="chip low"><span class="g"></span>Done</span>` : m.past ? `<span class="chip mod"><span class="g"></span>Late</span>` : "") : ""}</td></tr>`).join("")}
+    </tbody></table></div>
+  </div>`;
+}
+
+/* ---------- groups ---------- */
+function renderGroups() {
+  document.getElementById("v-groups").innerHTML = `
+  <div class="module">
+    <header><h2>Subject areas</h2><span class="sub">Courses are grouped by the “Subject area” field on each course</span></header>
+    <div class="body">
+      <p class="hint" style="margin:0 0 14px">Grouping is a lens, not a container — every course still stands on its own everywhere else on the deck. Integral Calculus, Differential Calculus, Matrix Algebra and Statistic II are grouped as <strong>Mathematics</strong> by default.</p>
+      <div class="groups">${M.groups.map(groupCard).join("")}</div>
+    </div>
+  </div>`;
+}
+
+function groupCard(g) {
+  const bandObj = BANDS.find(b => b.key === g.risk);
+  return `<div class="gcard">
+    <header><h3>${esc(g.name)}</h3><span style="margin-left:auto">${riskChip({ key: g.risk, cls: g.risk, label: bandObj.label })}</span></header>
+    <div class="gstats">
+      <div class="gstat"><b>${g.credits}</b><span>Total ECTS</span></div>
+      <div class="gstat"><b>${g.upcoming}${g.unsched ? `<span style="font-size:12px;color:var(--ink-3)"> +${g.unsched} tbd</span>` : ""}</b><span>Upcoming exams</span></div>
+      <div class="gstat"><b>${Math.round(g.remH)}<span style="font-size:12px;color:var(--ink-3)"> h</span></b><span>Workload left</span></div>
+      <div class="gstat"><b>${pct(g.prepFrac)}</b><span>Preparation</span></div>
+    </div>
+    <div class="gmembers">
+      ${g.list.map(c => `<div class="gm">
+        <span class="nm">${esc(c.name)}</span>
+        <span style="display:flex;gap:7px;align-items:center;flex:none">
+          <span class="mono" style="font-size:10.5px;color:var(--ink-3)">${c.dateState === "none" ? "coursework" : c.dateState === "tbd" ? (c.estimatedDate ? "est " + fmtShort(c.estimatedDate) : "TBD") : fmtShort(c.examDate)}</span>
+          ${riskChip(c.risk)}</span></div>`).join("")}
+      ${g.next ? `<div class="mono" style="font-size:11px;color:var(--ink-3);border-top:1px solid var(--line);padding-top:8px;margin-top:3px">Next up: ${esc(g.next.name)} in ${g.next.days} days</div>` : ""}
+    </div>
+  </div>`;
+}
+
+/* ---------- settings ---------- */
+function renderSettings() {
+  const S = state.settings;
+  document.getElementById("v-settings").innerHTML = `
+  <div class="module">
+    <header><h2>Study capacity</h2><span class="sub">${S.capacity.reduce((a, b) => a + b, 0)} h per week</span></header>
+    <div class="body" style="display:flex;flex-direction:column;gap:14px">
+      <p class="hint" style="margin:0">Hours of <em>exam preparation and coursework</em> available on each weekday — not lecture time. Every countdown, risk score and shortfall on the deck is measured against these numbers.</p>
+      <div class="caps">${WD.map((d, i) => `<label class="cap"><span>${d}</span><input type="number" min="0" max="16" step="0.5" value="${S.capacity[i]}" data-cap="${i}"></label>`).join("")}</div>
+    </div>
+  </div>
+  <div class="module">
+    <header><h2>Planner rules</h2></header>
+    <div class="body grid2">
+      <div class="field"><label for="set-reserve">Reserved for later exams</label>
+        <input id="set-reserve" type="number" min="0" max="60" step="5" value="${Math.round(S.reserveShare * 100)}" data-set="reserveShare">
+        <span class="hint">Percent of each day the nearest exam may not take while other work is open.</span></div>
+      <div class="field"><label for="set-window">Exam chain window</label>
+        <input id="set-window" type="number" min="2" max="45" value="${S.clusterWindow}" data-set="clusterWindow">
+        <span class="hint">Exams closer than this many days chain into one exam period.</span></div>
+      <div class="field"><label for="set-min">Exams before “high density”</label>
+        <input id="set-min" type="number" min="2" max="8" value="${S.clusterMin}" data-set="clusterMin">
+        <span class="hint">A chain this long raises the density alert.</span></div>
+      <div class="field"><label for="set-tight">Tight-turnaround gap</label>
+        <input id="set-tight" type="number" min="0" max="7" value="${S.tightGap}" data-set="tightGap">
+        <span class="hint">Days between two exams that counts as a clash.</span></div>
+      <div class="field"><label for="set-rem">Exam reminders (days before)</label>
+        <input id="set-rem" type="text" value="${S.reminders.join(", ")}" data-setlist="reminders">
+        <span class="hint">Created only for confirmed dates.</span></div>
+      <div class="field"><label for="set-wrem">Hand-in reminders (days before)</label>
+        <input id="set-wrem" type="text" value="${S.workReminders.join(", ")}" data-setlist="workReminders"></div>
+      <div class="field"><label for="set-sem">Semester label</label>
+        <input id="set-sem" type="text" value="${esc(S.semester)}" data-settext="semester"></div>
+    </div>
+  </div>
+  <div class="module">
+    <header><h2>Data</h2></header>
+    <div class="body srow">
+      <button class="btn" type="button" data-reset="1">Restore semester defaults</button>
+      <button class="btn" type="button" data-export="1">Copy data as JSON</button>
+      <span class="hint" style="flex:1 1 220px">${state.backend === "db" ? "Changes sync to this artifact's store and are visible wherever you open it." : "Changes are stored in this browser only."}</span>
+    </div>
+  </div>`;
+}
+
+/* ==========================================================================
+   Course editor
+   ========================================================================== */
+let editing = null;
+function openEditor(id) {
+  const c = state.courses.find(x => x.id === id);
+  if (!c) return;
+  editing = JSON.parse(JSON.stringify(c));
+  drawEditor();
+}
+function newCourse() {
+  editing = normaliseCourse({ id: uid("c"), name: "", credits: 5, assessment: "Exam", dateState: "tbd", examDate: null, estimatedDate: null, group: "", prep: { est: 10, done: 0, topics: [] }, deliverables: [], isNew: true });
+  drawEditor();
+}
+
+function drawEditor() {
+  // redrawing the sheet re-runs the projection; hold onto the focused control
+  const act = document.activeElement;
+  const keepId = act && act.id && document.getElementById("scrim")?.contains(act) ? act.id : null;
+  const c = editing;
+  const isExamType = c.dateState !== "none";
+  const rem = remaining(c);
+  const live = M.courses.find(x => x.id === c.id);
+  const sch = schedule(c);
+  const projected = sch.date ? projectRisk(c) : null;
+  const groupNames = [...new Set(state.courses.map(x => x.group).filter(Boolean))];
+
+  document.getElementById("scrim").hidden = false;
+  document.getElementById("scrim").innerHTML = `<div class="sheet" role="dialog" aria-modal="true" aria-label="Edit course">
+    <header><h2>${c.isNew ? "New course" : esc(c.name || "Course")}</h2>
+      <button class="btn ghost sm" type="button" data-close="1" aria-label="Close">✕</button></header>
+    <div class="sbody">
+      <div class="grid2">
+        <div class="field" style="grid-column:1/-1"><label for="e-name">Course name</label><input id="e-name" type="text" value="${esc(c.name)}" data-f="name" placeholder="e.g. Differential Calculus"></div>
+        <div class="field"><label for="e-cred">Credits (ECTS)</label><input id="e-cred" type="number" min="0" max="60" step="0.5" value="${c.credits}" data-f="credits"></div>
+        <div class="field"><label for="e-assess">Assessment type</label>
+          <select id="e-assess" data-f="assessment">
+            ${["Exam", "Oral exam", "Exercises / Coursework", "Coursework", "Project", "Portfolio"].map(a => `<option ${a === c.assessment ? "selected" : ""}>${a}</option>`).join("")}
+          </select></div>
+        <div class="field"><label for="e-group">Subject area</label>
+          <input id="e-group" type="text" list="grouplist" value="${esc(c.group || "")}" data-f="group" placeholder="e.g. Mathematics">
+          <datalist id="grouplist">${groupNames.map(g => `<option value="${esc(g)}"></option>`).join("")}</datalist></div>
+      </div>
+
+      <fieldset>
+        <legend>Exam date</legend>
+        <div class="seg" role="group" aria-label="Date state">
+          <button type="button" data-state="confirmed" aria-pressed="${c.dateState === "confirmed"}">Confirmed date</button>
+          <button type="button" data-state="tbd" aria-pressed="${c.dateState === "tbd"}">TBD</button>
+          <button type="button" data-state="none" aria-pressed="${c.dateState === "none"}">No exam</button>
+        </div>
+        ${c.dateState === "confirmed" ? `
+          <div class="field"><label for="e-date">Date</label><input id="e-date" type="date" value="${c.examDate || ""}" data-f="examDate"></div>
+          ${c.examDate ? `<p class="hint" style="margin:0">Counting down, on the calendar, reminders at ${state.settings.reminders.join(", ")} days out, milestones generated, risk and workload included.</p>` : `<p class="hint" style="margin:0">Pick a date to switch on the countdown and reminders.</p>`}
+        ` : c.dateState === "tbd" ? `
+          <p class="hint" style="margin:0"><strong>Exam date TBD.</strong> No countdown is shown and no reminders are created. You may add an expected date — it is planned against provisionally and clearly marked as an estimate, but never reminded on.</p>
+          <div class="grid2">
+            <div class="field"><label for="e-est">Expected date (optional)</label><input id="e-est" type="date" value="${c.estimatedDate || ""}" data-f="estimatedDate" min="${iso(today())}"></div>
+            <div class="field"><label for="e-real">Announced date → confirm</label><input id="e-real" type="date" value="" data-confirmfield="1" min="${iso(today())}"></div>
+          </div>
+          <p class="hint" style="margin:0">Entering an announced date flips this course to confirmed and recalculates everything.</p>
+        ` : `
+          <p class="hint" style="margin:0"><strong>No exam.</strong> Nothing counts down. This course is managed entirely through its assignments, exercises, projects and coursework deadlines below.</p>
+        `}
+      </fieldset>
+
+      ${isExamType ? `
+      <fieldset>
+        <legend>Preparation</legend>
+        <div class="grid2">
+          <div class="field"><label for="e-est-h">Estimated preparation</label><input id="e-est-h" type="number" min="0" max="500" step="0.5" value="${c.prep.est}" data-f="prep.est"></div>
+          <div class="field"><label for="e-done-h">Preparation completed</label><input id="e-done-h" type="number" min="0" max="500" step="0.5" value="${c.prep.done}" data-f="prep.done"></div>
+          <div class="field"><label>Preparation remaining</label>
+            <div class="mono" style="padding:7px 0;font-size:18px;font-weight:600">${hrs(rem)}</div></div>
+        </div>
+        ${projected ? projectionPanel(projected, rem) : `<p class="hint" style="margin:0">Set a date to see whether your remaining hours actually fit.</p>`}
+        <div>
+          <div class="eyebrow" style="margin-bottom:7px">Topics</div>
+          <div class="topiclist">
+            ${(c.prep.topics || []).map((t, i) => `<div class="topic ${t.done ? "done" : ""}">
+              <input type="checkbox" id="tp-${i}" ${t.done ? "checked" : ""} data-topic="${i}" aria-label="Mark “${esc(t.name)}” covered">
+              <input type="text" value="${esc(t.name)}" data-topicname="${i}" aria-label="Topic name">
+              <button class="btn ghost sm" type="button" data-topicdel="${i}" aria-label="Remove topic">✕</button></div>`).join("") || `<div class="topic" style="color:var(--ink-3);font-size:12.5px">No topics yet.</div>`}
+          </div>
+          <button class="btn sm" type="button" data-topicadd="1" style="margin-top:8px">+ Add topic</button>
+        </div>
+      </fieldset>` : ""}
+
+      <fieldset>
+        <legend>Assignments, exercises &amp; coursework</legend>
+        <div class="dlist">
+          <div class="drow" style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)">
+            <span>Done</span><span>Title</span><span>Due (blank = TBD)</span><span>Hours</span><span></span></div>
+          ${c.deliverables.map((d, i) => `<div class="drow">
+            <input type="checkbox" ${d.done ? "checked" : ""} data-ddone="${i}" aria-label="Mark ${esc(d.title)} submitted">
+            <input type="text" value="${esc(d.title)}" data-dtitle="${i}" aria-label="Title">
+            <input type="date" value="${d.due || ""}" data-ddue="${i}" aria-label="Due date">
+            <input type="number" min="0" step="0.5" value="${d.hours || 0}" data-dhours="${i}" aria-label="Hours of work">
+            <button class="btn ghost sm" type="button" data-ddel="${i}" aria-label="Remove">✕</button></div>`).join("")}
+        </div>
+        <button class="btn sm" type="button" data-dadd="1">+ Add item</button>
+        ${c.deliverables.some(d => !d.due && !d.done) ? `<p class="hint" style="margin:0">Items with no date show as <strong>deadline TBD</strong> — no countdown, no reminders — until you set one.</p>` : ""}
+      </fieldset>
+    </div>
+    <footer>
+      <button class="btn pri" type="button" data-save="1">Save</button>
+      <button class="btn" type="button" data-close="1">Cancel</button>
+      ${c.isNew ? "" : `<button class="btn danger sp" type="button" data-delete="1">Delete course</button>`}
+    </footer>
+  </div>`;
+  if (keepId) { const back = document.getElementById(keepId); if (back) { back.focus(); const n = back.value?.length; try { back.setSelectionRange(n, n); } catch {} } }
+  else { const f = document.getElementById("e-name"); if (c.isNew && f) f.focus(); }
+}
+
+/** What the risk would be if this edit were saved — recomputed against a cloned state. */
+function projectRisk(c) {
+  const backup = state.courses;
+  state.courses = state.courses.map(x => x.id === c.id ? JSON.parse(JSON.stringify(c)) : x);
+  if (!backup.some(x => x.id === c.id)) state.courses = [...state.courses, JSON.parse(JSON.stringify(c))];
+  let out = null;
+  try { const m = computeAll(); out = m.courses.find(x => x.id === c.id); }
+  finally { state.courses = backup; }
+  return out;
+}
+
+function projectionPanel(p, rem) {
+  if (!p || !p.sched.date) return "";
+  const short = p.deficit > 0.05;
+  const cls = short ? (p.risk.key === "crit" ? "crit" : "high") : "low";
+  return `<div class="alert ${cls}" style="align-items:center">
+    ${svgIc(short ? '<path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/>' : '<path d="M20 6L9 17l-5-5"/>').replace('class="ic"', 'class="ico"')}
+    <span class="txt">
+      <b>${p.risk.label}${p.sched.firm ? "" : " · based on an expected date"}</b>
+      <p class="mono" style="font-size:12px">Exam ${fmtShort(p.sched.date)} · ${p.days} days out · preparation remaining <strong>${hrs(rem)}</strong> · available study time <strong>${hrs(p.avail)}</strong></p>
+      <p>${short
+        ? `You need roughly <strong>${hrs(p.deficit)}</strong> more study time than the plan can find before this exam. Free up capacity, cut the estimate, or start earlier.`
+        : `The plan finds enough time for this exam alongside everything else.`}</p>
+      ${p.risk.reasons.length ? `<p class="mono" style="font-size:11px">${p.risk.reasons.map(r => "· " + esc(r)).join("<br>")}</p>` : ""}
+    </span></div>`;
+}
+
+function closeEditor() { editing = null; const s = document.getElementById("scrim"); s.hidden = true; s.innerHTML = ""; }
+
+function commitEditor() {
+  const c = editing;
+  if (!c.name.trim()) { toast("Give the course a name first."); return; }
+  c.credits = Number(c.credits) || 0;
+  normaliseCourse(c);
+  delete c.isNew;
+  const i = state.courses.findIndex(x => x.id === c.id);
+  if (i >= 0) state.courses[i] = c; else state.courses.push(c);
+  save(c);
+  closeEditor();
+  render();
+  toast(`${c.name} saved.`);
+}
+
+/* ==========================================================================
+   The TBD → confirmed transition, which is the whole point of the deck
+   ========================================================================== */
+function confirmDate(id, dateStr) {
+  const c = state.courses.find(x => x.id === id);
+  if (!c || !dateStr) { toast("Pick a date first."); return; }
+  c.dateState = "confirmed";
+  c.examDate = dateStr;
+  c.estimatedDate = null;
+  save(c);
+  render();
+  const live = M.courses.find(x => x.id === id);
+  const cl = M.clusters.find(x => x.exams.some(e => e.id === id));
+  const clash = M.conflicts.find(k => k.ids.includes(id));
+  toast(`${c.name} confirmed for ${fmtLong(dateStr)} — ${live.days} days out. ${live.deficit > 0.05 ? `Short ${hrs(live.deficit)}.` : "Study plan covers it."}${clash ? " Clash detected." : ""}${cl && cl.dense ? " Now part of a dense exam period." : ""}`, 6500);
+  if (VIEW === "dash") document.querySelector('[data-nav="dash"]')?.scrollIntoView({ block: "nearest" });
+}
+
+/* ==========================================================================
+   Events
+   ========================================================================== */
+function toast(msg, ms) {
+  const el = document.getElementById("toast");
+  el.textContent = msg; el.hidden = false;
+  clearTimeout(el._t); el._t = setTimeout(() => el.hidden = true, ms || 3200);
+}
+
+document.addEventListener("click", e => {
+  const t = e.target.closest("button, .ev");
+  if (!t) return;
+  const d = t.dataset;
+
+  if (d.nav) { VIEW = d.nav; render(); window.scrollTo({ top: 0, behavior: "instant" }); return; }
+  if (d.edit) { openEditor(d.edit); return; }
+  if (d.add) { newCourse(); return; }
+  if (d.close) { closeEditor(); return; }
+  if (d.save) { commitEditor(); return; }
+  if (d.delete) {
+    const c = editing; closeEditor();
+    state.courses = state.courses.filter(x => x.id !== c.id);
+    removeRemote(c.id); if (!DB) save();
+    render(); toast(`${c.name} removed.`); return;
+  }
+  if (d.confirm) { confirmDate(d.confirm, document.getElementById("setdate-" + d.confirm).value); return; }
+  if (d.expect) {
+    const c = state.courses.find(x => x.id === d.expect);
+    const v = document.getElementById("setdate-" + d.expect).value;
+    if (!v) { toast("Pick a date first."); return; }
+    c.dateState = "tbd"; c.estimatedDate = v; c.examDate = null;
+    save(c); render();
+    toast(`${c.name}: planning provisionally against ${fmtLong(v)}. No reminders until it is confirmed.`, 5000); return;
+  }
+  if (d.setwork) {
+    const [cid, did] = d.setwork.split("|");
+    const c = state.courses.find(x => x.id === cid);
+    const w = c.deliverables.find(x => x.id === did);
+    const v = document.getElementById(`setwork-${cid}-${did}`).value;
+    if (!v) { toast("Pick a date first."); return; }
+    w.due = v; save(c); render(); toast(`“${w.title}” due ${fmtLong(v)} — reminders at ${state.settings.workReminders.join(", ")} days out.`, 5000); return;
+  }
+  if (d.state) {
+    editing.dateState = d.state;
+    if (d.state !== "confirmed") editing.examDate = null;
+    if (d.state !== "tbd") editing.estimatedDate = null;
+    if (d.state === "none") { editing.assessment = editing.assessment === "Exam" ? "Exercises / Coursework" : editing.assessment; }
+    drawEditor(); return;
+  }
+  if (d.topicadd) { editing.prep.topics.push({ id: uid("t"), name: "New topic", done: false }); drawEditor(); return; }
+  if (d.topicdel) { editing.prep.topics.splice(+d.topicdel, 1); drawEditor(); return; }
+  if (d.dadd) { editing.deliverables.push({ id: uid("d"), title: "New item", due: null, hours: 4, doneHours: 0, done: false }); drawEditor(); return; }
+  if (d.ddel) { editing.deliverables.splice(+d.ddel, 1); drawEditor(); return; }
+  if (d.cal !== undefined) {
+    if (d.cal === "0") calCursor = new Date(M.T.getFullYear(), M.T.getMonth(), 1);
+    else calCursor = new Date(calCursor.getFullYear(), calCursor.getMonth() + Number(d.cal), 1);
+    renderCalendar(); return;
+  }
+  if (d.reset) {
+    if (!confirm("Replace everything on the deck with the original semester data?")) return;
+    const fresh = seedCourses();
+    const keep = new Set(fresh.map(c => c.id));
+    const drop = state.courses.map(c => c.id).filter(id => !keep.has(id));
+    state.courses = fresh;
+    state.settings = { ...DEFAULT_SETTINGS };
+    render();
+    // delete the extras first, then write the defaults — the other order races
+    Promise.all(drop.map(removeRemote)).then(pushAll).then(() => { render(); toast("Semester defaults restored."); });
+    return;
+  }
+  if (d.export) {
+    const json = JSON.stringify({ courses: state.courses, settings: state.settings }, null, 2);
+    navigator.clipboard?.writeText(json).then(() => toast("Copied to the clipboard."), () => toast("Could not copy — your browser blocked it."));
+    return;
+  }
+  if (t.id === "themeBtn") {
+    const root = document.documentElement;
+    const isDark = root.getAttribute("data-theme") === "dark" ||
+      (!root.getAttribute("data-theme") && matchMedia("(prefers-color-scheme: dark)").matches);
+    root.setAttribute("data-theme", isDark ? "light" : "dark");
+    return;
+  }
+});
+
+document.addEventListener("input", e => {
+  const d = e.target.dataset, v = e.target.value;
+  if (d.f && editing) {
+    if (d.f === "prep.est") editing.prep.est = Number(v) || 0;
+    else if (d.f === "prep.done") editing.prep.done = Number(v) || 0;
+    else if (d.f === "credits") editing.credits = Number(v) || 0;
+    else editing[d.f] = v || (d.f.includes("Date") ? null : v);
+    if (d.f === "examDate" || d.f === "estimatedDate" || d.f === "prep.est" || d.f === "prep.done") {
+      clearTimeout(window._pr); window._pr = setTimeout(drawEditor, 320);
+    }
+    return;
+  }
+  if (d.confirmfield && editing && v) { editing.dateState = "confirmed"; editing.examDate = v; editing.estimatedDate = null; drawEditor(); return; }
+  if (d.topicname && editing) { editing.prep.topics[+d.topicname].name = v; return; }
+  if (d.dtitle && editing) { editing.deliverables[+d.dtitle].title = v; return; }
+  if (d.ddue && editing) { editing.deliverables[+d.ddue].due = v || null; return; }
+  if (d.dhours && editing) { editing.deliverables[+d.dhours].hours = Number(v) || 0; return; }
+  if (d.cap !== undefined) { state.settings.capacity[+d.cap] = Number(v) || 0; queueSettings(); return; }
+  if (d.set) { state.settings[d.set] = d.set === "reserveShare" ? Math.min(0.6, Math.max(0, Number(v) / 100)) : Number(v) || 0; queueSettings(); return; }
+  if (d.setlist) { state.settings[d.setlist] = v.split(",").map(x => parseInt(x.trim(), 10)).filter(n => n > 0).sort((a, b) => b - a); queueSettings(); return; }
+  if (d.settext) { state.settings[d.settext] = v; queueSettings(true); return; }
+});
+
+document.addEventListener("change", e => {
+  const d = e.target.dataset;
+  if (d.topic !== undefined && editing) { editing.prep.topics[+d.topic].done = e.target.checked; drawEditor(); return; }
+  if (d.ddone !== undefined && editing) {
+    const item = editing.deliverables[+d.ddone];
+    item.done = e.target.checked;
+    if (item.done) item.doneHours = item.hours;
+    drawEditor(); return;
+  }
+});
+
+let setTimer = null;
+function queueSettings(light) {
+  clearTimeout(setTimer);
+  setTimer = setTimeout(() => {
+    save();
+    if (light) { document.getElementById("semLabel").textContent = state.settings.semester; return; }
+    // a settings edit changes every derived figure, so redraw — but keep the
+    // caret where the user left it
+    const a = document.activeElement;
+    const key = a && a.dataset ? (a.dataset.cap ?? a.dataset.set ?? a.dataset.setlist ?? a.dataset.settext) : null;
+    const attr = a && a.dataset ? (a.dataset.cap !== undefined ? "cap" : a.dataset.set !== undefined ? "set" : a.dataset.setlist !== undefined ? "setlist" : "settext") : null;
+    let pos = null; try { pos = a && a.selectionStart; } catch { pos = null; }
+    const sc = window.scrollY;
+    render();
+    window.scrollTo(0, sc);
+    if (key != null && attr) {
+      const el = document.querySelector(`[data-${attr}="${key}"]`);
+      if (el) { el.focus(); if (pos != null) try { el.setSelectionRange(pos, pos); } catch {} }
+    }
+  }, 500);
+}
+
+document.addEventListener("keydown", e => { if (e.key === "Escape" && editing) closeEditor(); });
+document.getElementById("scrim").addEventListener("mousedown", e => { if (e.target.id === "scrim") closeEditor(); });
+
+/* chart hover */
+document.addEventListener("mousemove", e => {
+  const g = e.target.closest?.("#wkchart .wkbar");
+  const tip = document.getElementById("wktip");
+  if (!tip) return;
+  if (!g) { tip.hidden = true; return; }
+  const w = M.weeks[+g.dataset.i];
+  if (!w) { tip.hidden = true; return; }
+  const labels = {}; M.plan.items.forEach(i => labels[i.key] = i);
+  const rows = Object.entries(w.parts).sort((a, b) => b[1] - a[1]).slice(0, 5)
+    .map(([k, v]) => `<span class="tr"><span>${esc((labels[k]?.name || "").slice(0, 22))}</span><span>${hrs(v)}</span></span>`).join("");
+  tip.innerHTML = `<b>Week of ${w.start.getDate()} ${MON[w.start.getMonth()].slice(0, 3)}</b>
+    <span class="tr"><span>Assigned</span><span>${hrs(w.total)}</span></span>
+    <span class="tr"><span>Capacity</span><span>${hrs(w.capacity)}</span></span>
+    ${rows ? `<span style="display:block;height:1px;background:var(--line);margin:6px 0"></span>${rows}` : ""}
+    ${w.events.filter(x => x.type !== "due").map(x => `<span class="tr" style="color:var(--crit-ink)"><span>${esc(x.title.slice(0, 20))}</span><span>exam</span></span>`).join("")}`;
+  const wrap = document.getElementById("wkchart").getBoundingClientRect();
+  tip.hidden = false;
+  const tw = tip.offsetWidth;
+  tip.style.left = Math.max(4, Math.min(wrap.width - tw - 4, e.clientX - wrap.left + 12)) + "px";
+  tip.style.top = Math.max(4, e.clientY - wrap.top - 10) + "px";
+});
+
+boot();
+</script>
